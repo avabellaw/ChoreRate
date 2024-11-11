@@ -1,5 +1,14 @@
 # ChoreRate
 
+## Design
+
+### Wireframe
+
+Wireframe created on Figma and [can be found here](https://www.figma.com/design/v2nJYg67szWzNOtYYGt84v/ChoreTool?node-id=1-2&t=HkiOzXU8oSLrsBJ6-1)
+
+
+## ERD
+
 ## Enviroment variables
 
 * DEBUG - _optional_ to set Flask debug to True
@@ -11,4 +20,6 @@
 
 ### Images
 
-* [Plus icon - by flaticon](https://www.flaticon.com/free-icon/plus_1828819?term=plus&page=1&position=13&origin=search&related_id=1828819)
+* [Plus icon - by Pixel Perfect **Flaticon**](https://www.flaticon.com/free-icon/plus_1828819?term=plus&page=1&position=13&origin=search&related_id=1828819)
+
+* [Minus icon - by Fathema Khanom **Flaticon**](https://www.flaticon.com/free-icon/minus_10263924?term=minus&page=1&position=14&origin=search&related_id=10263924)
