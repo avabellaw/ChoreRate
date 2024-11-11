@@ -1,7 +1,7 @@
 '''Main app file for the Flask app'''
 import os
-from flask import Flask
-import env
+from flask import Flask, render_template
+import env # noqa - imports variables from env.py
 
 app = Flask(__name__)
 
@@ -11,7 +11,7 @@ app.secret_key = os.environ.get('SECRET_KEY')
 @app.route('/')
 def homepage():
     '''View for the homepage'''
-    return '<h1>Homepage</h1>'
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
