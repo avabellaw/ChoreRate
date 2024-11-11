@@ -1,0 +1,4 @@
+.dist
+venv/
+env.py
+__pycache__/
