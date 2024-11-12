@@ -9,6 +9,7 @@ body {
 #navbar {
     padding: 1em 0.5em;
     background: #b7f1ff;
+    font-size: 0.9em;
 }
 
 #navbar p {
@@ -30,16 +31,39 @@ body {
     justify-content: space-between;
 }
 
+#nav-container a {
+    display: inline-block;
+}
+
+#nav-links a {
+    padding: 0.3em 0.5em;
+    border-radius: 10%;
+    border-bottom: 1px solid #0000003b;
+}
+
+#nav-links a:hover {
+    transform: scale(1.001);
+    border-color: #000000a4;
+}
+
 /* GENERAL */
 
 .container {
-    display: flex;
     max-width: 98vw;
     margin: auto;
+}
+
+main {
+    margin-top: 0.5em;
 }
 
 @media screen and (min-width: 768px) {
     .container {
         max-width: 600px;
     }    
+
+    #nav-links a {
+        padding: 0.5em 0.8em;
+        margin-left: 0.5em;
+    }
 }
