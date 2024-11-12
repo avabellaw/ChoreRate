@@ -15,6 +15,7 @@ Wireframe created on Figma and [can be found here](https://www.figma.com/design/
 * IP - _optional_ to set the IP address of the server.
 * PORT - _optional_ to set the port for the website.
 * SECRET_KEY - the app's secret key to sign cookies and for encryption.
+* DB_URL - Url for the database.
 
 ## Credit
 
