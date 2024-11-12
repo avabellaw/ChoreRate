@@ -29,7 +29,8 @@ def manage():
         db.session.commit()
         flash(f"Chore {name} added successfully!", 'success')
         return redirect(url_for('manage'))
-    return render_template('manage.html')
+    chores = Chore.query.all()
+    return render_template('manage.html', chores=chores)
 
 
 @app.route('/register', methods=['GET', 'POST'])

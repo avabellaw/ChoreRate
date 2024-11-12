@@ -61,7 +61,8 @@ body {
 /* GENERAL */
 
 .container {
-    max-width: 98vw;
+    max-width: 95vw;
+    padding: 0 0.2em;
     margin: auto;
 }
 
@@ -91,9 +92,9 @@ body {
     text-transform: capitalize;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 625px) {
     .container {
-        max-width: 800px;
+        max-width: 600px;
     }
 
     #nav-links a {
@@ -138,11 +139,16 @@ body {
     width: fit-content;
     padding: 0.4em 2em;
     margin: auto;
-    background-color: #000;
+    background-color: #000000d2;
     color: #fff;
     border-radius: 0.5em;
     border: none;
     font-weight: 600;    
+}
+
+.form-btn:hover {
+    background-color: #000;
+    cursor: pointer;
 }
 
 a.small-link {
@@ -160,6 +166,42 @@ a.small-link {
 
 #add-chore-form > .form-btn {
     margin: 0;
+}
+
+#chore-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: center;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#chore-list > li {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: aliceblue;
+    margin: 0 0.5em;
+    padding: 1em;
+    border: 1px solid #0000003b;
+    border-left: none;
+    border-right: none;
+}
+
+#chore-list > li:hover {
+    border-color: #00000070;
+    cursor: pointer;
+}
+
+#chore-list > li > a {
+    color: rgb(88, 0, 0);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+#chore-list > li:hover > a {
+    text-decoration: underline;
 }
 
 /* ANIMATION */
