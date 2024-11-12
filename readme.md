@@ -32,3 +32,5 @@ Wireframe created on Figma and [can be found here](https://www.figma.com/design/
 * [Plus icon - by Pixel Perfect **Flaticon**](https://www.flaticon.com/free-icon/plus_1828819?term=plus&page=1&position=13&origin=search&related_id=1828819)
 
 * [Minus icon - by Fathema Khanom **Flaticon**](https://www.flaticon.com/free-icon/minus_10263924?term=minus&page=1&position=14&origin=search&related_id=10263924)
+
+* [Rate icon in logo and favicon - by photo3idea_studio **Flaticon**](https://www.flaticon.com/free-icon/rate_3163742?term=rate&page=1&position=1&origin=tag&related_id=3163742)
