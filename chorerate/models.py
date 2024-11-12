@@ -32,6 +32,22 @@ class Chore(db.Model):
 
     def __repr__(self):
         return f"<{self.name} {self.frequency} - {self.times_per_frequency}x>"
+    
+
+class ChoreRating(db.Model):
+    '''Model for the chore rating table'''
+    __tablename__ = 'chore_ratings'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    chore_id = db.Column(db.Integer,
+                         db.ForeignKey('chores.id'),
+                         nullable=False)
+    rating = db.Column(db.SmallInteger,
+                       db.CheckConstraint('rating >= 1 AND rating <= 10'),
+                       nullable=False)
+
+    def __repr__(self):
+        return f"<{self.user_id} rated '{self.chore_id}': {self.rating}>"
 
 
 @login_manager.user_loader
