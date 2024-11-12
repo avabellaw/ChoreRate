@@ -102,6 +102,44 @@ body {
     }
 }
 
+/* FORM */
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.form--sm {
+    max-width: 300px;
+    margin: auto;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.form-btn {
+    width: fit-content;
+    padding: 0.4em 2em;
+    margin: auto;
+    background-color: #000;
+    color: #fff;
+    border-radius: 0.5em;
+    border: none;
+    font-weight: 600;    
+}
+
+a.small-link {
+    margin-top: 0.2em;
+    font-size: 0.8em;
+    text-align: center;
+}
+
+/* ANIMATION */
+
 @keyframes slideInSlideOut {
     0% {
         transform: translateY(-100%);
