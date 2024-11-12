@@ -1,40 +1,52 @@
 <!DOCTYPE html>
 <html lang="en-gb">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <title>{% block title %}ChoreRate{% endblock %}</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+        <title>{% block title %}ChoreRate{% endblock %}</title>
+    </head>
 
-<body>
-    <nav>
-        <div id="navbar">
-            <div class="container">
-                <div id="nav-container">
-                    <div id="logo">
-                        <a href="{{ url_for('homepage') }}">
-                            <p>ChoreRate</p>
-                        </a>
-                    </div>
-                    {% if current_user.is_authenticated %}
+    <body>
+        <nav>
+            <div id="navbar">
+                <div class="container">
+                    <div id="nav-container">
+                        <div id="logo">
+                            <a href="{{ url_for('homepage') }}">
+                                <p>ChoreRate</p>
+                            </a>
+                        </div>
+                        {% if current_user.is_authenticated %}
                         <div id="nav-links">
                             <a href="">Rate Chores</a>
                             <a href="">Manage</a>
                             <a href="{{ url_for('logout') }}">Logout</a>
                         </div>
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <main>
-        <div class="container">
-            {% block content %}{% endblock %}
+        <div id="flashes-container">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul id="flashes">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            {% endwith %}
         </div>
-    </main>
-</body>
+
+        <main>
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </body>
 
 </html>

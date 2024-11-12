@@ -43,6 +43,7 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
         if user and check_password_hash(user.password, password):
+            flash(f"Welcome {user.username}!", 'success')
             login_user(user)
             return redirect(url_for('homepage'))
     return render_template('login.html')
@@ -52,5 +53,6 @@ def login():
 @login_required
 def logout():
     '''Logout route, redirects to login'''
+    flash("You have been logged out", 'info')
     logout_user()
     return redirect(url_for('login'))

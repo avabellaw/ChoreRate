@@ -53,17 +53,52 @@ body {
     margin: auto;
 }
 
-main {
-    margin-top: 0.5em;
+#flashes {
+    padding: 0.35em;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    border: 1px solid #a7a7a7;
+    border-left: 0;
+    border-right: 0;
+    font-size: 0.75em;
+    list-style-type: none;
+    background-color: #b7f1ff2b;
+
+    transform: translateY(-100%);
+    animation: slideInSlideOut 5s linear;
+}
+
+#flashes-container {
+    height: calc(.70em + .75em);
+    overflow: hidden;
 }
 
 @media screen and (min-width: 768px) {
     .container {
-        max-width: 600px;
-    }    
+        max-width: 800px;
+    }
 
     #nav-links a {
         padding: 0.5em 0.8em;
         margin-left: 0.5em;
+    }
+}
+
+@keyframes slideInSlideOut {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    10% {
+        transform: translateY(0);
+    }
+
+    90% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-100%);
     }
 }
