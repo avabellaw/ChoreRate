@@ -1,12 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
     let choresList;
     let index = 1;
+    let rateContainer = document.getElementById('rate-chores-container');
     fetch('/rate/get-unrated')
         .then(response => response.json())
         .then(data => {
             choresList = data;
             document.getElementById('unrated-total').textContent = choresList.length;
             showChore();
+            buttons = document.getElementById('rate-btn-container').children;
+            for (let i = 0; i < buttons.length; i++) {
+                let btn = buttons[i];
+                let increment = 255 / buttons.length;
+                let red = 255 - (i * increment);
+                let green = i * increment;
+                btn.style.backgroundColor = `rgba(${red}, ${green},0, 0.2)`;
+            }
+
+            rateContainer.classList.remove('hidden');
+            document.getElementById('loading-indicator').classList.add('hidden');
         })
         .catch(error => console.error('Error fetching unrated chores:', error));
 
@@ -27,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('frequency').textContent = 'month';
             }
         } else {
-            document.getElementById('rate-chores-container').classList.add('hidden');
+            rateContainer.classList.add('hidden');
             let message = document.getElementById('message');
             message.classList.remove('hidden');
         }

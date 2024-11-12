@@ -6,29 +6,31 @@
 
 {% block content %}
 
-<div class="container">
-    <div id="page-header">
-        <h1>Rate Chores</h1>
-    </div>
+<div id="page-header">
+    <h1>Rate Chores</h1>
+</div>
 
-    <div id="rate-chores-container">
-        <p>
-            <span id="chore-index">1</span> out of <span id="unrated-total"></span>
-        </p>
-        <p>
-            name: <span id="chore-name"></span>
-        </p>
-        <p>
-            <span id="times-per-frequency">1</span>x per <span id="frequency">day</span>
-        </p>
-        <hr>
+<div id="rate-chores-container" class="hidden">
+    <p class="text-center">
+        <small><span id="chore-index">1</span> out of <span id="unrated-total"></span> unrated.</small>
+    </p>
+    <div id="chore">
+        <p id="chore-name"></p>
+        <p><span id="times-per-frequency">1</span>x per <span id="frequency">day</span></p>
+    </div>
+    <br>
+    <div id="rate-btn-container">
         {% for i in range(1, 11) %}
             <button class="rate-btn" data-rate="{{ i }}">{{ i }}</button>
         {% endfor %}
     </div>
-
-    <span id="message" class="hidden">No more chores left to rate.</span>
 </div>
+
+<div id="loading-indicator">
+    <p>Loading...</p>
+</div>
+
+<span id="message" class="hidden">No more chores left to rate.</span>
 
 {% endblock %}
 
