@@ -1,4 +1,6 @@
 '''Contains the routes for the application'''
+import json
+
 from flask import render_template, redirect, url_for, request, flash, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
 
@@ -15,20 +17,34 @@ def homepage():
     return render_template('index.html')
 
 
-@app.route('/rate')
+@app.route('/rate', methods=['GET', 'POST'])
 @login_required
 def rate():
     '''View for the rate page'''
+    if request.method == 'POST':
+        data = json.loads(request.data.decode('utf-8'))
+        rating, chord_id = map(int, data.values())
+
+        new_rating = ChoreRating(user_id=current_user.id,
+                                 chore_id=chord_id,
+                                 rating=rating)
+
+        db.session.add(new_rating)
+        db.session.commit()
+
+        return jsonify({'message': 'success'})
     return render_template('rate-chores.html')
 
 
 @app.route('/rate/get-unrated')
 @login_required
 def get_unrated():
+    '''Get unrated chores for the current user for the rate chores page'''
     user_id = current_user.id
-    rated = ChoreRating.query.filter_by(user_id=user_id).all()
-    unrated = Chore.query.filter(~Chore.id.in_(rated)).all()
-    return jsonify([{'name': chore.name,
+    rated = db.session.query(ChoreRating.chore_id).filter_by(user_id=user_id).subquery()
+    unrated = db.session.query(Chore).filter(~Chore.id.in_(rated.select())).all()
+    return jsonify([{'id': chore.id,
+                     'name': chore.name,
                      'frequency': chore.frequency.value,
                      'times_per_frequency': chore.times_per_frequency}
                     for chore in unrated])
