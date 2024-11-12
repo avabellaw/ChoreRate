@@ -2,6 +2,14 @@
 
 ## Design
 
+### features
+
+* Each user rates chores.
+  * Chores are then allocated each week based on ratings.
+* Set frequency of chore (monthly, weekly, daily)
+  * Set the times per frequency eg. 3x every week
+  * Use this to to create schedule.
+
 ### Wireframe
 
 Wireframe created on Figma and [can be found here](https://www.figma.com/design/v2nJYg67szWzNOtYYGt84v/ChoreTool?node-id=1-2&t=HkiOzXU8oSLrsBJ6-1)
