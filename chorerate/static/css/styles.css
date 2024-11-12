@@ -7,7 +7,7 @@ body {
 /* NAVBAR */
 
 #navbar {
-    padding: 1em 0.5em;
+    padding: 0.8em 1em;
     background: #b7f1ff;
     font-size: 0.9em;
 }
@@ -21,10 +21,6 @@ body {
     color: #000;
 }
 
-#logo {
-    margin-right: auto;
-}
-
 #nav-container {
     width: 100%;
     display: flex;
@@ -33,6 +29,12 @@ body {
 
 #nav-container a {
     display: inline-block;
+}
+
+#nav-links {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5em;
 }
 
 #nav-links a {
@@ -44,6 +46,16 @@ body {
 #nav-links a:hover {
     transform: scale(1.001);
     border-color: #000000a4;
+}
+
+#logo {
+    margin-right: auto;
+}
+
+#logo > a {
+    display: inline-flex;
+    height: 100%;
+    align-items: center;
 }
 
 /* GENERAL */

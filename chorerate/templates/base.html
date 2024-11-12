@@ -15,7 +15,7 @@
                     <div id="nav-container">
                         <div id="logo">
                             <a href="{{ url_for('homepage') }}">
-                                <p>ChoreRate</p>
+                                <img width="60" height="30" src="{{ url_for('static', filename='images/logo.webp') }}" alt="">
                             </a>
                         </div>
                         {% if current_user.is_authenticated %}
