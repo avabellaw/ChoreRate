@@ -5,7 +5,7 @@ from flask_login import login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from chorerate import app, db
-from chorerate.models import User
+from chorerate.models import User, Chore, FrequencyEnum
 
 
 @app.route('/')
@@ -15,9 +15,20 @@ def homepage():
     return render_template('index.html')
 
 
-@app.route('/manage')
+@app.route('/manage', methods=['GET', 'POST'])
 @login_required
 def manage():
+    if request.method == 'POST':
+        name = request.form['chore-name']
+        frequency = request.form['chore-frequency']
+        frequency_enum = FrequencyEnum(frequency)
+        times_per_frequency = request.form['chore-times']
+        new_chore = Chore(name=name, frequency=frequency_enum,
+                          times_per_frequency=times_per_frequency)
+        db.session.add(new_chore)
+        db.session.commit()
+        flash(f"Chore {name} added successfully!", 'success')
+        return redirect(url_for('manage'))
     return render_template('manage.html')
 
 

@@ -7,7 +7,7 @@ from sqlalchemy import Enum
 from chorerate import db, login_manager
 
 
-class Frequency(python_enum.Enum):
+class FrequencyEnum(python_enum.Enum):
     '''Enum for the frequency of a chore'''
     DAILY = 'daily'
     WEEKLY = 'weekly'
@@ -27,7 +27,7 @@ class Chore(db.Model):
     __tablename__ = 'chores'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-    frequency = db.Column(Enum(Frequency), nullable=False)
+    frequency = db.Column(Enum(FrequencyEnum), nullable=False)
     times_per_frequency = db.Column(db.SmallInteger, nullable=False)
 
     def __repr__(self):
