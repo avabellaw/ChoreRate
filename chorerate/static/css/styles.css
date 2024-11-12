@@ -1,0 +1,45 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* NAVBAR */
+
+#navbar {
+    padding: 1em 0.5em;
+    background: #b7f1ff;
+}
+
+#navbar p {
+    margin: 0;
+}
+
+#navbar a {
+    text-decoration: none;
+    color: #000;
+}
+
+#logo {
+    margin-right: auto;
+}
+
+#nav-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* GENERAL */
+
+.container {
+    display: flex;
+    max-width: 98vw;
+    margin: auto;
+}
+
+@media screen and (min-width: 768px) {
+    .container {
+        max-width: 600px;
+    }    
+}

@@ -1,15 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-gb">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <title>{% block title %}ChoreRate{% endblock %}</title>
 </head>
+
 <body>
     <nav>
-        <p>ChoreRate</p>
+        <div id="navbar">
+            <div class="container">
+                <div id="nav-container">
+                    <div id="logo">
+                        <a href="{{ url_for('homepage') }}">
+                            <p>ChoreRate</p>
+
+                        </a>
+                    </div>
+                    <div id="nav-links">
+                        <a href="">Rate Chores</a>
+                        <a href="">Manage</a>
+                        <a href="{{ url_for('logout') }}">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </nav>
 
     {% block content %}{% endblock %}
 </body>
+
 </html>
