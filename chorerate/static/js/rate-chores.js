@@ -8,14 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
             choresList = data;
             document.getElementById('unrated-total').textContent = choresList.length;
             showChore();
-            buttons = document.getElementById('rate-btn-container').children;
-            for (let i = 0; i < buttons.length; i++) {
-                let btn = buttons[i];
-                let increment = 255 / buttons.length;
-                let red = 255 - (i * increment);
-                let green = i * increment;
-                btn.style.backgroundColor = `rgba(${red}, ${green},0, 0.2)`;
-            }
 
             rateContainer.classList.remove('hidden');
             document.getElementById('loading-indicator').classList.add('hidden');

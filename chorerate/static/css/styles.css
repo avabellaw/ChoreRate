@@ -259,6 +259,61 @@ a.small-link {
     justify-content: space-evenly;
 }
 
+.rate-btn {
+    --alpha: 0.2;
+    width: 2em;
+    height: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rate-btn[data-rate="1"] {
+    background-color: rgba(230, 25, 100, var(--alpha));
+}
+
+.rate-btn[data-rate="2"] {
+    background-color: rgba(205, 50, 100, var(--alpha));
+}
+
+.rate-btn[data-rate="3"] {
+    background-color: rgba(180, 75, 100, var(--alpha));
+}
+
+.rate-btn[data-rate="4"] {
+    background-color: rgba(155, 100, 100, var(--alpha));
+}
+
+.rate-btn[data-rate="5"] {
+    background-color: rgba(130, 125, 100, var(--alpha));
+}
+
+.rate-btn[data-rate="6"] {
+    background-color: rgba(105, 150, 100, var(--alpha));
+}
+
+.rate-btn[data-rate="7"] {
+    background-color: rgba(80, 175, 100, var(--alpha));
+}
+
+.rate-btn[data-rate="8"] {
+    background-color: rgba(55, 200, 100, var(--alpha));
+}
+
+.rate-btn[data-rate="9"] {
+    background-color: rgba(30, 225, 100, var(--alpha));
+}
+
+.rate-btn[data-rate="10"] {
+    background-color: rgba(5, 250, 100, var(--alpha));
+}
+
+.rate-btn:hover {
+    --alpha: 0.4;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
 /* ANIMATION */
 
 @keyframes slideInSlideOut {
