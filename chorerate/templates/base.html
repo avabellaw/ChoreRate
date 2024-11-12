@@ -22,7 +22,7 @@
                         {% if current_user.is_authenticated %}
                         <div id="nav-links">
                             <a href="">Rate Chores</a>
-                            <a href="">Manage</a>
+                            <a href="{{ url_for('manage') }}">Manage</a>
                             <a href="{{ url_for('logout') }}">Logout</a>
                         </div>
                         {% endif %}

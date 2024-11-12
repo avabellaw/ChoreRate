@@ -121,6 +121,19 @@ body {
     gap: 0.5em;
 }
 
+.form-group--inline, .form-group--inline > * {
+    display: inline;
+}
+
+#chore-times {
+    width: 3em;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
 .form-btn {
     width: fit-content;
     padding: 0.4em 2em;
@@ -136,6 +149,17 @@ a.small-link {
     margin-top: 0.2em;
     font-size: 0.8em;
     text-align: center;
+}
+
+/* MANAGE */
+
+#add-chore-form {
+    margin: 0 0.5em;
+    margin-bottom: 1em;
+}
+
+#add-chore-form > .form-btn {
+    margin: 0;
 }
 
 /* ANIMATION */

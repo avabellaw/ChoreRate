@@ -15,6 +15,12 @@ def homepage():
     return render_template('index.html')
 
 
+@app.route('/manage')
+@login_required
+def manage():
+    return render_template('manage.html')
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
