@@ -53,6 +53,7 @@ def get_unrated():
 @app.route('/manage', methods=['GET', 'POST'])
 @login_required
 def manage():
+    '''Add chores and view all chores to edit'''
     if request.method == 'POST':
         name = request.form['chore-name']
         frequency = request.form['chore-frequency']
@@ -64,7 +65,8 @@ def manage():
                           duration_minutes=duration_minutes)
         db.session.add(new_chore)
         db.session.commit()
-        flash(f"Chore {name} added successfully!", 'success')
+        flash(f"Chore #{new_chore.id} - '{name.lower()}' \
+            added successfully!", 'success')
         return redirect(url_for('manage'))
     chores = Chore.query.all()
     return render_template('manage.html', chores=chores)

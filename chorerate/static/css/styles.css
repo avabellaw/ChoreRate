@@ -145,7 +145,7 @@ body {
     display: none !important;
 }
 
-.form-btn {
+.btn {
     width: fit-content;
     padding: 0.4em 2em;
     margin: auto;
@@ -156,7 +156,7 @@ body {
     font-weight: 600;    
 }
 
-.form-btn:hover {
+.btn:hover {
     background-color: #000;
     cursor: pointer;
 }
@@ -174,7 +174,7 @@ a.small-link {
     margin-bottom: 1em;
 }
 
-#add-chore-form > .form-btn {
+#add-chore-form > .btn--form {
     margin: 0;
 }
 
