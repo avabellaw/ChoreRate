@@ -58,8 +58,10 @@ def manage():
         frequency = request.form['chore-frequency']
         frequency_enum = FrequencyEnum(frequency)
         times_per_frequency = request.form['chore-times']
+        duration_minutes = request.form['chore-duration']
         new_chore = Chore(name=name, frequency=frequency_enum,
-                          times_per_frequency=times_per_frequency)
+                          times_per_frequency=times_per_frequency,
+                          duration_minutes=duration_minutes)
         db.session.add(new_chore)
         db.session.commit()
         flash(f"Chore {name} added successfully!", 'success')

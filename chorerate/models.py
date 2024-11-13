@@ -29,10 +29,11 @@ class Chore(db.Model):
     name = db.Column(db.String(50), nullable=False)
     frequency = db.Column(Enum(FrequencyEnum), nullable=False)
     times_per_frequency = db.Column(db.SmallInteger, nullable=False)
+    duration_minutes = db.Column(db.SmallInteger, nullable=False)
 
     def __repr__(self):
         return f"<{self.name} {self.frequency} - {self.times_per_frequency}x>"
-    
+
 
 class ChoreRating(db.Model):
     '''Model for the chore rating table'''
