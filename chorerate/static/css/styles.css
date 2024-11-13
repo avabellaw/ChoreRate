@@ -273,43 +273,43 @@ a.small-link {
 }
 
 .rate-btn[data-rate="1"] {
-    background-color: rgba(230, 25, 100, var(--alpha));
+    background-color: rgba(255, 0, 0, var(--alpha));
 }
 
 .rate-btn[data-rate="2"] {
-    background-color: rgba(205, 50, 100, var(--alpha));
+    background-color: rgba(255, 50, 50, var(--alpha));
 }
 
 .rate-btn[data-rate="3"] {
-    background-color: rgba(180, 75, 100, var(--alpha));
+    background-color: rgba(255, 100, 100, var(--alpha));
 }
 
 .rate-btn[data-rate="4"] {
-    background-color: rgba(155, 100, 100, var(--alpha));
+    background-color: rgba(255, 150, 150, var(--alpha));
 }
 
 .rate-btn[data-rate="5"] {
-    background-color: rgba(130, 125, 100, var(--alpha));
+    background-color: rgba(255, 200, 200, var(--alpha));
 }
 
 .rate-btn[data-rate="6"] {
-    background-color: rgba(105, 150, 100, var(--alpha));
+    background-color: rgba(200, 255, 200, var(--alpha));
 }
 
 .rate-btn[data-rate="7"] {
-    background-color: rgba(80, 175, 100, var(--alpha));
+    background-color: rgba(150, 255, 150, var(--alpha));
 }
 
 .rate-btn[data-rate="8"] {
-    background-color: rgba(55, 200, 100, var(--alpha));
+    background-color: rgba(100, 255, 100, var(--alpha));
 }
 
 .rate-btn[data-rate="9"] {
-    background-color: rgba(30, 225, 100, var(--alpha));
+    background-color: rgba(50, 255, 50, var(--alpha));
 }
 
 .rate-btn[data-rate="10"] {
-    background-color: rgba(5, 250, 100, var(--alpha));
+    background-color: rgba(0, 255, 0, var(--alpha));
 }
 
 .rate-btn:hover, .rate-btn.selected {
