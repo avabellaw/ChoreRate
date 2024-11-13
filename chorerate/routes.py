@@ -48,7 +48,7 @@ def rate():
                          'times_per_frequency': chore.times_per_frequency,
                          'rating': rating.rating}
                         for chore, rating in rated_chores_rows]
-        return render_template('rate-chores.html', rated_chores=rated_chores)
+        return render_template('edit-ratings.html', rated_chores=rated_chores)
 
     return render_template('rate-chores.html')
 

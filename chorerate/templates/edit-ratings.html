@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ super() }} - Edit ratings
+{% endblock %}
+
+{% block content %}
+    <div id="page-header">
+        <h1>Edit ratings</h1>
+    </div>
+
+    <div id="edit-ratings">
+        <ul id="chore-list">
+            {% for chore in rated_chores %}
+            <li>
+                <span>{{ chore.name }} </span>
+                <span>
+                    {{ chore.times_per_frequency }}x
+                    {% if chore.frequency.value == 'daily' %}
+                        per day
+                    {% elif chore.frequency.value == 'weekly' %}
+                        per week
+                    {% elif chore.frequency.value == 'monthly' %}
+                        per month
+                    {% endif %}
+                </span>
+                <span>
+                    {{ chore.duration_minutes }} minutes
+                </span>
+    
+                rating{{ chore.ratings}}
+                <div id="rate-btn-container">
+                    {% for i in range(1, 11) %}
+                        <button class="rate-btn {% if chore.rating == i %}selected{% endif %}" data-rate="{{ i }}">{{ i }}</button>
+                    {% endfor %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
