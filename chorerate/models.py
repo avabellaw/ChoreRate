@@ -47,6 +47,8 @@ class ChoreRating(db.Model):
                        db.CheckConstraint('rating >= 1 AND rating <= 10'),
                        nullable=False)
 
+    chore = db.relationship('Chore', backref='ratings')
+
     def __repr__(self):
         return f"<{self.user_id} rated '{self.chore_id}': {self.rating}>"
 

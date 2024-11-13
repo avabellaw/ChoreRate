@@ -9,6 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from chorerate import app, db
 from chorerate.models import User, Chore, ChoreRating, FrequencyEnum
 
+from chorerate.helpers import get_unrated_from_db
 
 @app.route('/')
 @login_required
@@ -24,9 +25,9 @@ def rate():
     if request.method == 'POST':
         data = json.loads(request.data.decode('utf-8'))
         rating, chord_id = map(int, data.values())
-        
+
         existing_rating = db.session.query(ChoreRating).filter_by(user_id=current_user.id, chore_id=chord_id).first()
-        
+
         if existing_rating:
             existing_rating.rating = rating
         else:
@@ -38,6 +39,17 @@ def rate():
         db.session.commit()
 
         return jsonify({'message': 'success'})
+
+    if len(get_unrated_from_db()) == 0:
+        rated_chores_rows = db.session.query(Chore, ChoreRating).join(ChoreRating).filter(ChoreRating.user_id == current_user.id).all()
+        rated_chores = [{'id': chore.id,
+                         'name': chore.name,
+                         'frequency': chore.frequency.value,
+                         'times_per_frequency': chore.times_per_frequency,
+                         'rating': rating.rating}
+                        for chore, rating in rated_chores_rows]
+        return render_template('rate-chores.html', rated_chores=rated_chores)
+
     return render_template('rate-chores.html')
 
 
@@ -45,9 +57,7 @@ def rate():
 @login_required
 def get_unrated():
     '''Get unrated chores for the current user for the rate chores page'''
-    user_id = current_user.id
-    rated = db.session.query(ChoreRating.chore_id).filter_by(user_id=user_id).subquery()
-    unrated = db.session.query(Chore).filter(~Chore.id.in_(rated.select())).all()
+    unrated = get_unrated_from_db()
     return jsonify([{'id': chore.id,
                      'name': chore.name,
                      'frequency': chore.frequency.value,

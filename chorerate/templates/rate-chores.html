@@ -10,29 +10,65 @@
     <h1>Rate Chores</h1>
 </div>
 
-<div id="rate-chores-container" class="hidden">
-    <p class="text-center">
-        <small><span id="chore-index">1</span> out of <span id="unrated-total"></span> unrated.</small>
-    </p>
-    <div id="chore">
-        <p id="chore-name"></p>
-        <p><span id="times-per-frequency">1</span>x per <span id="frequency">day</span></p>
-    </div>
-    <br>
-    <div id="rate-btn-container">
-        {% for i in range(1, 11) %}
-            <button class="rate-btn" data-rate="{{ i }}">{{ i }}</button>
-        {% endfor %}
+{% if not rated_chores %}
+
+    <div id="rate-chores-container" class="hidden">
+        <p class="text-center">
+            <small><span id="chore-index">1</span> out of <span id="unrated-total"></span> unrated.</small>
+        </p>
+        <div id="chore">
+            <p id="chore-name"></p>
+            <p><span id="times-per-frequency">1</span>x per <span id="frequency">day</span></p>
+        </div>
+        <br>
+        <div id="rate-btn-container">
+            {% for i in range(1, 11) %}
+                <button class="rate-btn" data-rate="{{ i }}">{{ i }}</button>
+            {% endfor %}
+        </div>
+
+        <button class="btn btn--form hidden" id="back-btn">Back</button>
     </div>
 
-    <button class="btn btn--form hidden" id="back-btn">Back</button>
-</div>
+    <div id="loading-indicator">
+        <p>Loading...</p>
+    </div>
 
-<div id="loading-indicator">
-    <p>Loading...</p>
-</div>
+{% endif %}
 
 <p id="message" class="hidden text-center">No more chores left to rate.</p>
+
+{% if rated_chores %}
+
+    <ul id="chore-list">
+        {% for chore in rated_chores %}
+        <li>
+            <span>{{ chore.name }} </span>
+            <span>
+                {{ chore.times_per_frequency }}x
+                {% if chore.frequency.value == 'daily' %}
+                    per day
+                {% elif chore.frequency.value == 'weekly' %}
+                    per week
+                {% elif chore.frequency.value == 'monthly' %}
+                    per month
+                {% endif %}
+            </span>
+            <span>
+                {{ chore.duration_minutes }} minutes
+            </span>
+
+            rating{{ chore.ratings}}
+            <div id="rate-btn-container">
+                {% for i in range(1, 11) %}
+                    <button class="rate-btn {% if chore.rating == i %}selected{% endif %}" data-rate="{{ i }}">{{ i }}</button>
+                {% endfor %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endif %}
 
 {% endblock %}
 

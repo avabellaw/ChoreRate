@@ -90,7 +90,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             rateContainer.classList.add('hidden');
             document.getElementById('message').classList.remove('hidden');
+            refreshPageAfterTimeout();
             return false; // Signal that there are no more chores to rate.
         }
+    }
+
+    async function refreshPageAfterTimeout(){
+        setTimeout(function() {
+            window.location.reload();
+        }, 3000);
     }
 });
