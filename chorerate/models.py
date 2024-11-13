@@ -50,6 +50,17 @@ class ChoreRating(db.Model):
         return f"<{self.user_id} rated '{self.chore_id}': {self.rating}>"
 
 
+class AllocatedChore(db.Model):
+    '''Model for the allocated chore table'''
+    __tablename__ = 'allocated_chores'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    chore_id = db.Column(db.Integer, db.ForeignKey('chores.id'), nullable=False)
+
+    def __repr__(self):
+        return f"<{self.user_id} has been allocated '{self.chore_id}'>"
+
+
 @login_manager.user_loader
 def load_user(user_id):
     '''Loads the user for the login manager'''
