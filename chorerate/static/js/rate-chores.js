@@ -7,10 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             choresList = data;
             document.getElementById('unrated-total').textContent = choresList.length;
-            console.log(data);
-            showChore();
-
-            rateContainer.classList.remove('hidden');
+            if(showChore()) {
+                rateContainer.classList.remove('hidden');
+            }
             document.getElementById('loading-indicator').classList.add('hidden');
         })
         .catch(error => console.error('Error fetching unrated chores:', error));
@@ -42,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function showChore() {
-        if (index <= choresList.length) {
+        if (index < choresList.length) {
             document.getElementById('chore-index').textContent = index + 1;
 
             // Get chore and then increment index
@@ -57,10 +56,12 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (chore.frequency === 'monthly') {
                 document.getElementById('frequency').textContent = 'month';
             }
+
+            return true;
         } else {
             rateContainer.classList.add('hidden');
-            let message = document.getElementById('message');
-            message.classList.remove('hidden');
+            document.getElementById('message').classList.remove('hidden');
+            return false; // Signal that there are no more chores to rate.
         }
     }
 });
