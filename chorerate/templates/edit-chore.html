@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ super() }} - Edit chore
+{% endblock %}
+
+{% block content %}
+
+<div id="page-header">
+    <h1>Edit chore #{{ chore.id }}</h1>
+</div>
+
+<div id="edit-chore">
+    <form class="form form--sm" method="POST">
+        <input type="hidden" name="chore-id" value="{{ chore.id }}">
+
+        <div class="form-group">
+            <label for="chore-name">Name:</label>
+            <input type="text" id="chore-name" name="chore-name" value="{{ chore.name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="chore-frequency">Frequency:</label>
+            <select id="chore-frequency" name="chore-frequency" required>
+                <option value="monthly" {% if chore.frequency.value == 'monthly' %}selected{% endif %}>Monthly</option>
+                <option value="weekly" {% if chore.frequency.value == 'weekly' %}selected{% endif %}>Weekly</option>
+                <option value="daily" {% if chore.frequency.value == 'daily' %}selected{% endif %}>Daily</option>
+            </select>
+        </div>
+
+        <div class="form-group form-group--inline">
+            <input type="number" min="1" max="28" name="chore-times" id="chore-times" value="{{ chore.times_per_frequency }}" required>
+            <label for="chore-times"> per <span id="frequency">{{ chore.frequency.value }}</span></label>
+        </div>
+
+        <div class="form-group">
+            <label for="chore-duration">Duration (minutes):</label>
+            <input type="number" step="5" id="chore-duration" name="chore-duration" value="{{ chore.duration_minutes }}" required>
+        </div>
+
+        <button type="submit" class="form-btn">Update chore</button>
+    </form>
+</div>
+
+{% endblock %}

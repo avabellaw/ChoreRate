@@ -70,6 +70,26 @@ def manage():
     return render_template('manage.html', chores=chores)
 
 
+@app.route('/manage/edit-chore/<int:chore_id>', methods=['GET', 'POST'])
+@login_required
+def edit_chore(chore_id):
+    if request.method == 'POST':
+        chore_id = request.form['chore-id']
+        chore = Chore.query.get(chore_id)
+        chore.name = request.form['chore-name']
+        chore.frequency = FrequencyEnum(request.form['chore-frequency'])
+        chore.times_per_frequency = request.form['chore-times']
+        chore.duration_minutes = request.form['chore-duration']
+
+        db.session.commit()
+        flash(f"Chore #{chore_id} - '{chore.name.lower()}' \
+            updated successfully!", 'success')
+        return redirect(url_for('manage'))
+
+    chore = Chore.query.get(chore_id)
+    return render_template('edit-chore.html', chore=chore)
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
