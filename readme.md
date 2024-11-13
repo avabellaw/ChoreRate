@@ -9,6 +9,9 @@
 * Set frequency of chore (monthly, weekly, daily)
   * Set the times per frequency eg. 3x every week
   * Use this to to create schedule.
+* Share less desirable chores.
+* After rating chores, show what you've rated.
+  * Replace "no more chores" message with this.
 
 ### Wireframe
 
