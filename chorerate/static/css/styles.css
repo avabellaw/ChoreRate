@@ -178,7 +178,7 @@ a.small-link {
     margin: 0;
 }
 
-#chore-list {
+.chore-list {
     display: flex;
     flex-wrap: wrap;
     gap: 1em;
@@ -187,7 +187,7 @@ a.small-link {
     padding-left: 0;
 }
 
-#chore-list > li {
+.chore-list > li {
     display: flex;
     flex-wrap: wrap;
     row-gap: 0.8em;
@@ -201,18 +201,18 @@ a.small-link {
     border-right: none;
 }
 
-#chore-list > li:hover {
+.chore-list > li:hover {
     border-color: #00000070;
     cursor: pointer;
 }
 
-#chore-list > li > a {
+.chore-list > li > a {
     color: rgb(88, 0, 0);
     font-weight: 600;
     text-decoration: none;
 }
 
-#chore-list > li:hover > a {
+.chore-list > li:hover > a {
     text-decoration: underline;
 }
 

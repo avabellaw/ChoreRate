@@ -1,5 +1,6 @@
 '''Contains the routes for the application'''
 import json
+from datetime import date
 
 from flask import render_template, redirect, url_for, request, flash, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
@@ -7,7 +8,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from chorerate import app, db
-from chorerate.models import User, Chore, ChoreRating, FrequencyEnum
+from chorerate.models import User, Chore, ChoreRating, AllocatedChore, FrequencyEnum
 
 from chorerate.helpers import get_unrated_from_db
 
@@ -16,7 +17,14 @@ from chorerate.helpers import get_unrated_from_db
 @login_required
 def homepage():
     '''View for the homepage'''
-    return render_template('index.html')
+    chores = db.session.query(Chore, AllocatedChore)\
+        .join(AllocatedChore)\
+        .filter(AllocatedChore.user_id == current_user.id).all()
+
+    todays_chores = [chore for chore in chores if chore.due_date == date.today()]
+    return render_template('index.html',
+                           chores=chores,
+                           todays_chores=todays_chores)
 
 
 @app.route('/rate', methods=['GET', 'POST'])
