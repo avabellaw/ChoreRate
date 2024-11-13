@@ -189,6 +189,8 @@ a.small-link {
 
 #chore-list > li {
     display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.8em;
     justify-content: space-between;
     width: 100%;
     background-color: aliceblue;
@@ -261,13 +263,16 @@ a.small-link {
     width: 100%;
     max-width: 350px;
     justify-content: space-evenly;
+    align-items: center;
 }
 
 .rate-btn {
     --alpha: 0.2;
-    width: 2em;
-    height: 2em;
+    max-width: 2em;
+    max-height: 2em;
     display: flex;
+    flex-grow: 1;
+    aspect-ratio: 1/1;
     justify-content: center;
     align-items: center;
 }

@@ -13,7 +13,10 @@
         <ul id="chore-list">
             {% for chore in rated_chores %}
             <li>
-                <span>{{ chore.name }} </span>
+                <span>
+                    {{ chore.name }} 
+                    <small>({{ chore.duration_minutes }} mins)</small>
+                </span>
 
                 <div id="rate-btn-container" data-chore="{{ chore.id }}">
                     {% for i in range(1, 11) %}

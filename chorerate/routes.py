@@ -11,6 +11,7 @@ from chorerate.models import User, Chore, ChoreRating, FrequencyEnum
 
 from chorerate.helpers import get_unrated_from_db
 
+
 @app.route('/')
 @login_required
 def homepage():
@@ -44,7 +45,8 @@ def rate():
         rated_chores_rows = db.session.query(Chore, ChoreRating).join(ChoreRating).filter(ChoreRating.user_id == current_user.id).all()
         rated_chores = [{'id': chore.id,
                          'name': chore.name,
-                         'rating': rating.rating}
+                         'rating': rating.rating,
+                         'duration_minutes': chore.duration_minutes}
                         for chore, rating in rated_chores_rows]
         return render_template('edit-ratings.html', rated_chores=rated_chores)
 
