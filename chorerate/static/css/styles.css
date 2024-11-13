@@ -312,10 +312,18 @@ a.small-link {
     background-color: rgba(5, 250, 100, var(--alpha));
 }
 
-.rate-btn:hover {
+.rate-btn:hover, .rate-btn.selected {
     --alpha: 0.4;
     transform: scale(1.2);
+}
+
+.rate-btn:hover {
     cursor: pointer;
+}
+
+#back-btn {
+    margin-left: 0;
+    margin-top: 1.5em;
 }
 
 /* ANIMATION */

@@ -24,12 +24,17 @@ def rate():
     if request.method == 'POST':
         data = json.loads(request.data.decode('utf-8'))
         rating, chord_id = map(int, data.values())
+        
+        existing_rating = db.session.query(ChoreRating).filter_by(user_id=current_user.id, chore_id=chord_id).first()
+        
+        if existing_rating:
+            existing_rating.rating = rating
+        else:
+            new_rating = ChoreRating(user_id=current_user.id,
+                                     chore_id=chord_id,
+                                     rating=rating)
 
-        new_rating = ChoreRating(user_id=current_user.id,
-                                 chore_id=chord_id,
-                                 rating=rating)
-
-        db.session.add(new_rating)
+            db.session.add(new_rating)
         db.session.commit()
 
         return jsonify({'message': 'success'})
