@@ -44,8 +44,6 @@ def rate():
         rated_chores_rows = db.session.query(Chore, ChoreRating).join(ChoreRating).filter(ChoreRating.user_id == current_user.id).all()
         rated_chores = [{'id': chore.id,
                          'name': chore.name,
-                         'frequency': chore.frequency.value,
-                         'times_per_frequency': chore.times_per_frequency,
                          'rating': rating.rating}
                         for chore, rating in rated_chores_rows]
         return render_template('edit-ratings.html', rated_chores=rated_chores)
