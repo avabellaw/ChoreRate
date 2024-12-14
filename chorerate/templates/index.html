@@ -9,7 +9,7 @@
             <p>No chores today!</p>
         {% else %}
             <ul class="chore-list">
-                {% for chore in todays_chores %}
+                {% for chore, allocation in todays_chores %}
                 <li>
                     <h3>
                         {{ chore.name }}
@@ -40,7 +40,7 @@
             <p>Pending chore allocation...</p>
         {% else %}
             <ul class="chore-list">
-                {% for chore in chores %}
+                {% for chore in unique_chores %}
                 <li>
                     <h3>
                         {{ chore.name }}
@@ -57,17 +57,6 @@
                     </span>
                     <span>
                         Duration: {{ chore.duration_minutes }} minutes
-                    </span>
-                    <span>
-                        Due date: {{ chore.due_date }}
-                    </span>
-                    <span>
-                        Completed:
-                        {% if chore.completed_date %}
-                            Yes
-                        {% else %}
-                            No
-                        {% endif %}
                     </span>
                 </li>
                 {% endfor %}

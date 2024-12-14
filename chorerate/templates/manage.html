@@ -47,7 +47,10 @@
         <ul class="chore-list">
             {% for chore in chores %}
             <li>
-                <span>{{ chore.name }} </span>
+                <span>
+                    {{ chore.name }}
+                    {{ chore.allocation.user.username }}
+                </span>
                 <span>
                     {{ chore.times_per_frequency }}x
                     {% if chore.frequency.value == 'daily' %}

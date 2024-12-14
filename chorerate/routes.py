@@ -21,9 +21,16 @@ def homepage():
         .join(AllocatedChore)\
         .filter(AllocatedChore.user_id == current_user.id).all()
 
-    todays_chores = [chore for chore in chores if chore.due_date == date.today()]
+    unique_chores = []
+    for chore, _ in chores:
+        if chore not in unique_chores:
+            unique_chores.append(chore)
+
+    todays_chores = [(chore, allocation) for chore, allocation in chores
+                     if allocation.due_date == date.today()]
     return render_template('index.html',
                            chores=chores,
+                           unique_chores=unique_chores,
                            todays_chores=todays_chores)
 
 
@@ -92,7 +99,8 @@ def manage():
             added successfully!", 'success')
         return redirect(url_for('manage'))
     chores = Chore.query.all()
-    return render_template('manage.html', chores=chores)
+    allocations = AllocatedChore.query.filter_by(user_id=current_user.id).all()
+    return render_template('manage.html', chores=chores, allocations=allocations)
 
 
 @app.route('/manage/edit-chore/<int:chore_id>', methods=['GET', 'POST'])
@@ -105,6 +113,12 @@ def edit_chore(chore_id):
         chore.frequency = FrequencyEnum(request.form['chore-frequency'])
         chore.times_per_frequency = request.form['chore-times']
         chore.duration_minutes = request.form['chore-duration']
+        
+        allocation_user_id = request.form['allocation']
+        
+        allocated_user = AllocatedChore.query.filter_by(chore_id=chore_id).first()
+        
+        allocated_user.user_id = allocation_user_id
 
         db.session.commit()
         flash(f"Chore #{chore_id} - '{chore.name.lower()}' \
@@ -112,7 +126,8 @@ def edit_chore(chore_id):
         return redirect(url_for('manage'))
 
     chore = Chore.query.get(chore_id)
-    return render_template('edit-chore.html', chore=chore)
+    users = User.query.all()
+    return render_template('edit-chore.html', chore=chore, users=users)
 
 
 @app.route('/register', methods=['GET', 'POST'])
