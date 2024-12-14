@@ -1,10 +1,15 @@
 '''Contains the database models'''
+import os
+
 import enum as python_enum
+from datetime import datetime, timedelta
 
 from flask_login import UserMixin
 from sqlalchemy import Enum
 
 from chorerate import db, login_manager
+
+DEBUG = os.environ['DEBUG']
 
 
 class FrequencyEnum(python_enum.Enum):
@@ -21,6 +26,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
 
+    allocated_chore = db.relationship('AllocatedChore', backref='user', uselist=False)
+
 
 class Chore(db.Model):
     '''Model for the chore table'''
@@ -30,6 +37,8 @@ class Chore(db.Model):
     frequency = db.Column(Enum(FrequencyEnum), nullable=False)
     times_per_frequency = db.Column(db.SmallInteger, nullable=False)
     duration_minutes = db.Column(db.SmallInteger, nullable=False)
+
+    allocation = db.relationship('AllocatedChore', backref='chore', uselist=False)
 
     def __repr__(self):
         return f"<{self.name} {self.frequency} - {self.times_per_frequency}x>"
@@ -59,6 +68,7 @@ class AllocatedChore(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     chore_id = db.Column(db.Integer, db.ForeignKey('chores.id'), nullable=False)
+    due_date = db.Column(db.Date, nullable=False)
 
     def __repr__(self):
         return f"<{self.user_id} has been allocated '{self.chore_id}'>"
