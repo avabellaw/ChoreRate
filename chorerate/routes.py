@@ -8,7 +8,8 @@ from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from chorerate import app, db
-from chorerate.models import User, Chore, ChoreRating, AllocatedChore, FrequencyEnum
+from chorerate.models import User, Chore, ChoreRating, AllocatedChore, \
+                             FrequencyEnum, HouseholdMember
 
 from chorerate.helpers import get_unrated_from_db
 
@@ -17,6 +18,11 @@ from chorerate.helpers import get_unrated_from_db
 @login_required
 def homepage():
     '''View for the homepage'''
+    household_member = db.session.query(HouseholdMember).filter_by(user_id=current_user.id).first()
+
+    if not household_member:
+        return redirect(url_for('create_household'))
+
     chores = db.session.query(Chore, AllocatedChore)\
         .join(AllocatedChore)\
         .filter(AllocatedChore.user_id == current_user.id).all()
@@ -32,6 +38,14 @@ def homepage():
                            chores=chores,
                            unique_chores=unique_chores,
                            todays_chores=todays_chores)
+    
+    
+@app.route('/create-household', methods=['GET', 'POST'])
+@login_required
+def create_household():
+    '''View for the create household page'''
+
+    return render_template('household/create-household.html')
 
 
 @app.route('/rate', methods=['GET', 'POST'])
@@ -113,11 +127,11 @@ def edit_chore(chore_id):
         chore.frequency = FrequencyEnum(request.form['chore-frequency'])
         chore.times_per_frequency = request.form['chore-times']
         chore.duration_minutes = request.form['chore-duration']
-        
+
         allocation_user_id = request.form['allocation']
-        
+
         allocated_user = AllocatedChore.query.filter_by(chore_id=chore_id).first()
-        
+
         allocated_user.user_id = allocation_user_id
 
         db.session.commit()
@@ -146,14 +160,15 @@ def register():
         new_user = User(username=username, password=hashed_password)
         existing_user = User.query.filter_by(
             username=new_user.username).first()
+        
         if not existing_user:
             db.session.add(new_user)
             db.session.commit()
-            flash('User created successfully!', 'success')
-            return redirect(url_for('login'))
-
-        flash('Username already exists.', 'danger')
-        render_template('register.html')
+            login_user(new_user)
+            flash(f"Welcome {new_user.username}!", 'success')
+            return redirect(url_for('homepage'))
+        else:
+            flash('Username already exists.', 'danger')
 
     return render_template('register.html')
 

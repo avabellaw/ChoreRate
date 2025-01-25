@@ -26,10 +26,6 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
 
-    allocated_chore = db.relationship('AllocatedChore',
-                                      backref='user',
-                                      uselist=False)
-
 
 class Household(db.Model):
     '''Model for the household table'''
