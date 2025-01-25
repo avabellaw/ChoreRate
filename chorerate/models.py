@@ -36,11 +36,13 @@ class Household(db.Model):
     __tablename__ = 'households'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
-    
+
     chores = db.relationship('Chore', backref='household')
 
 
 class HouseholdMember(db.Model):
+    '''Model for the household member table'''
+    __tablename__ = 'household_members'
     id = db.Column(db.Integer, primary_key=True)
     household_id = db.Column(db.Integer,
                              db.ForeignKey('households.id'),
@@ -79,7 +81,7 @@ class ChoreRating(db.Model):
     '''Model for the chore rating table'''
     __tablename__ = 'chore_ratings'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    household_member_id = db.Column(db.Integer, db.ForeignKey('household_members.id'), nullable=False)
     chore_id = db.Column(db.Integer,
                          db.ForeignKey('chores.id'),
                          nullable=False)
@@ -97,7 +99,7 @@ class AllocatedChore(db.Model):
     '''Model for the allocated chore table'''
     __tablename__ = 'allocated_chores'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    Household_member_id = db.Column(db.Integer, db.ForeignKey('household_members.id'), nullable=False)
     chore_id = db.Column(db.Integer, db.ForeignKey('chores.id'), nullable=False)
     due_date = db.Column(db.Date, nullable=False)
 
