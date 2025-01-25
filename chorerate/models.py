@@ -26,7 +26,26 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
 
-    allocated_chore = db.relationship('AllocatedChore', backref='user', uselist=False)
+    allocated_chore = db.relationship('AllocatedChore',
+                                      backref='user',
+                                      uselist=False)
+
+
+class Household(db.Model):
+    '''Model for the household table'''
+    __tablename__ = 'households'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), nullable=False)
+
+
+class HouseholdMember(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    household_id = db.Column(db.Integer,
+                             db.ForeignKey('households.id'),
+                             nullable=False)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.id'),
+                        nullable=False)
 
 
 class Chore(db.Model):
