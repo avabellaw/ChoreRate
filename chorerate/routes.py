@@ -9,7 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from chorerate import app, db
 from chorerate.models import User, Chore, ChoreRating, AllocatedChore, \
-                             FrequencyEnum, HouseholdMember
+                             FrequencyEnum, Household, HouseholdMember
 
 from chorerate.helpers import get_unrated_from_db
 
@@ -18,14 +18,15 @@ from chorerate.helpers import get_unrated_from_db
 @login_required
 def homepage():
     '''View for the homepage'''
-    household_member = db.session.query(HouseholdMember).filter_by(user_id=current_user.id).first()
+    household_member = db.session.query(HouseholdMember)\
+        .filter_by(user_id=current_user.id).first()
 
     if not household_member:
         return redirect(url_for('create_household'))
 
     chores = db.session.query(Chore, AllocatedChore)\
         .join(AllocatedChore)\
-        .filter(AllocatedChore.user_id == current_user.id).all()
+        .filter(AllocatedChore.Household_member_id == household_member.id).all()
 
     unique_chores = []
     for chore, _ in chores:
@@ -38,13 +39,28 @@ def homepage():
                            chores=chores,
                            unique_chores=unique_chores,
                            todays_chores=todays_chores)
-    
-    
+
+
 @app.route('/create-household', methods=['GET', 'POST'])
 @login_required
 def create_household():
     '''View for the create household page'''
 
+    if request.method == 'POST':
+        # Create a new household
+        household_name = request.form['household-name']
+        new_household = Household(name=household_name)
+        db.session.add(new_household)
+        db.session.commit()
+
+        # Add the current user to the household as a household member
+        new_household_member = HouseholdMember(household_id=new_household.id,
+                                               user_id=current_user.id)
+        db.session.add(new_household_member)
+        db.session.commit()
+
+        flash(f"Household '{household_name}' created successfully!", 'success')
+        return redirect(url_for('homepage'))
     return render_template('household/create-household.html')
 
 
