@@ -1,5 +1,7 @@
 # ChoreRate
 
+[View the live website here](https://chorerate-cb14d5db605d.herokuapp.com/login?next=%2F)
+
 ## Design
 
 ### features
@@ -18,7 +20,9 @@
 Wireframe created on Figma and [can be found here](https://www.figma.com/design/v2nJYg67szWzNOtYYGt84v/ChoreTool?node-id=1-2&t=HkiOzXU8oSLrsBJ6-1)
 
 
-## ERD
+## Entity Relationship Diagram
+
+ERD created on LucidChart and [can be found here](https://lucid.app/lucidchart/4fe510dc-91f4-4c66-9d34-28b186ccc122/edit?viewport_loc=-1173%2C-115%2C2742%2C1284%2C0_0&invitationId=inv_ef4eb648-4b5b-4cf5-b181-b8bd0e498cea)
 
 ## Enviroment variables
 
