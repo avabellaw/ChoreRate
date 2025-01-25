@@ -4,7 +4,18 @@
 
 ## Design
 
-### features
+### Setup
+
+### Households 
+
+A household is created by a user, who then becomes a household member. 
+It is given a **name** and a **password**.
+
+Household members can then add new users as house members.
+
+Households will cease to exist if there are no more members. There will be a warning when the last user tries to leave.
+
+### Features
 
 * Each user rates chores.
   * Chores are then allocated each week based on ratings.
@@ -14,6 +25,7 @@
 * Share less desirable chores.
 * After rating chores, show what you've rated.
   * Replace "no more chores" message with this.
+* Household chores can be backed up and even imported into new households.
 
 ### Wireframe
 
