@@ -29,7 +29,7 @@ def homepage():
 
     chores = db.session.query(Chore, AllocatedChore)\
         .join(AllocatedChore)\
-        .filter(AllocatedChore.Household_member_id == household_member.id).all()
+        .filter(AllocatedChore.household_member_id == household_member.id).all()
 
     unique_chores = []
     for chore, _ in chores:

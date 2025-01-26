@@ -126,7 +126,8 @@ class AllocatedChore(db.Model):
     chore_id = db.Column(db.Integer,
                          db.ForeignKey('chores.id'),
                          nullable=False)
-    due_date = db.Column(db.Date, nullable=False)
+    
+    due_date = db.Column(db.DateTime, nullable=True)
 
     household_member = db.relationship('HouseholdMember',
                                        backref='allocated_chores')
