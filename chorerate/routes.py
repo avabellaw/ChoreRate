@@ -240,12 +240,20 @@ def edit_chore(chore_id):
         chore.times_per_frequency = request.form['chore-times']
         chore.duration_minutes = request.form['chore-duration']
 
-        allocation_user_id = request.form['allocation']
+        allocation_member_id = request.form['allocation']
+        
+        if allocation_member_id:
+            allocated_user = AllocatedChore.query.filter_by(
+                chore_id=chore_id).first()
+            
+            if not allocated_user:
+                allocated_user = AllocatedChore(
+                    household_member_id=allocation_member_id,
+                    chore_id=chore_id, 
+                    due_date=datetime.now().date()) # Remove later
+                db.session.add(allocated_user)
 
-        allocated_user = AllocatedChore.query.filter_by(
-            chore_id=chore_id).first()
-
-        allocated_user.user_id = allocation_user_id
+            allocated_user.household_member_id = allocation_member_id
 
         db.session.commit()
         flash(f"Chore #{chore_id} - '{chore.name.lower()}' \
@@ -253,8 +261,8 @@ def edit_chore(chore_id):
         return redirect(url_for('manage'))
 
     chore = Chore.query.get(chore_id)
-    users = User.query.all()
-    return render_template('edit-chore.html', chore=chore, users=users)
+    members = helpers.current_household().members
+    return render_template('edit-chore.html', chore=chore, members=members)
 
 
 @app.route('/register', methods=['GET', 'POST'])

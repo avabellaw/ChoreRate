@@ -41,8 +41,11 @@
         <div class="form-group">
             <label for="chore-allocation">allocation:</label>
             <select name="allocation" id="allocation">
-                {% for user in users %}
-                    <option value="{{ user.id }}" {% if chore.allocation.user.id == user.id %}selected{% endif %}>{{ user.username }}</option>
+                {% if not chore.allocation %}
+                    <option value="" selected>Unallocated</option>
+                {% endif %}
+                {% for member in members %}
+                    <option value="{{ member.id }}" {% if chore.allocation and chore.allocation.household_member.id == member.id %}selected{% endif %}>{{ member.user.username }}</option>
                 {% endfor %}
             </select>
         </div>
