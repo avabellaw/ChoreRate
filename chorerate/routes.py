@@ -1,18 +1,18 @@
 '''Contains the routes for the application'''
 import json
-from datetime import date
+from datetime import date, datetime
 
-from flask import render_template, redirect, url_for, request, flash, jsonify
+from flask import render_template, redirect, url_for, request, flash, jsonify, session
 from flask_login import login_user, login_required, logout_user, current_user
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from chorerate import app, db
 from chorerate.models import User, Chore, ChoreRating, AllocatedChore, \
-                             FrequencyEnum, Household, HouseholdMember, \
-                             RegistrationLink
+    FrequencyEnum, Household, HouseholdMember, \
+    RegistrationLink
 
-from chorerate.helpers import get_unrated_from_db
+from chorerate import helpers
 
 import secrets
 
@@ -81,21 +81,21 @@ def manage_household_members():
         user = User.query.filter_by(username=username).first()
 
         if user:
-            print("user found")
             if user == current_user:
-                flash("You cannot add yourself to your own household.", 'danger')
+                flash("You cannot add yourself to your own household.",
+                      'danger')
                 return redirect(url_for('manage_household_members'))
-            print("user not current user")
             if user in household.members:
-                flash(f"User '{username}' is already a member of household '{household.name}'.", 'danger')
+                flash(f"User '{username}' is already a member "
+                      + "of household '{household.name}'.", 'danger')
                 return redirect(url_for('manage_household_members'))
-            print("user not in household")
 
             household_member = HouseholdMember(household_id=household.id,
                                                user_id=user.id)
             db.session.add(household_member)
             db.session.commit()
-            flash(f"User '{username}' added to household '{household.name}' successfully!", 'success')
+            flash(f"User '{username}' added to household '{
+                  household.name}' successfully!", 'success')
         else:
             flash(f"User '{username}' does not exist.", 'danger')
 
@@ -112,9 +112,9 @@ def get_registration_link():
     '''Create a registration link for the household'''
     data = request.get_json()
     household_id = data['household_id']
-    
+
     token = secrets.token_urlsafe(16)
-    
+
     new_link = RegistrationLink(token=token, household_id=household_id)
     db.session.add(new_link)
     db.session.commit()
@@ -132,7 +132,8 @@ def rate():
         data = json.loads(request.data.decode('utf-8'))
         rating, chord_id = map(int, data.values())
 
-        existing_rating = db.session.query(ChoreRating).filter_by(user_id=current_user.id, chore_id=chord_id).first()
+        existing_rating = db.session.query(ChoreRating).filter_by(
+            user_id=current_user.id, chore_id=chord_id).first()
 
         if existing_rating:
             existing_rating.rating = rating
@@ -146,8 +147,9 @@ def rate():
 
         return jsonify({'message': 'success'})
 
-    if len(get_unrated_from_db()) == 0:
-        rated_chores_rows = db.session.query(Chore, ChoreRating).join(ChoreRating).filter(ChoreRating.user_id == current_user.id).all()
+    if len(helpers.get_unrated_from_db()) == 0:
+        rated_chores_rows = db.session.query(Chore, ChoreRating).join(
+            ChoreRating).filter(ChoreRating.user_id == current_user.id).all()
         rated_chores = [{'id': chore.id,
                          'name': chore.name,
                          'rating': rating.rating,
@@ -162,7 +164,7 @@ def rate():
 @login_required
 def get_unrated():
     '''Get unrated chores for the current user for the rate chores page'''
-    unrated = get_unrated_from_db()
+    unrated = helpers.get_unrated_from_db()
     return jsonify([{'id': chore.id,
                      'name': chore.name,
                      'frequency': chore.frequency.value,
@@ -190,7 +192,9 @@ def manage():
         return redirect(url_for('manage'))
     chores = Chore.query.all()
     allocations = AllocatedChore.query.filter_by(user_id=current_user.id).all()
-    return render_template('manage.html', chores=chores, allocations=allocations)
+    return render_template('manage.html',
+                           chores=chores,
+                           allocations=allocations)
 
 
 @app.route('/manage/edit-chore/<int:chore_id>', methods=['GET', 'POST'])
@@ -206,7 +210,8 @@ def edit_chore(chore_id):
 
         allocation_user_id = request.form['allocation']
 
-        allocated_user = AllocatedChore.query.filter_by(chore_id=chore_id).first()
+        allocated_user = AllocatedChore.query.filter_by(
+            chore_id=chore_id).first()
 
         allocated_user.user_id = allocation_user_id
 
@@ -223,6 +228,8 @@ def edit_chore(chore_id):
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        token = session.pop('registration_token', None)
+
         username = request.form['username']
         password = request.form['password']
         confirm_password = request.form['confirm-password']
@@ -236,15 +243,27 @@ def register():
         new_user = User(username=username, password=hashed_password)
         existing_user = User.query.filter_by(
             username=new_user.username).first()
-        
+
         if not existing_user:
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user)
-            flash(f"Welcome {new_user.username}!", 'success')
+
+            if token:
+                return helpers.add_user_to_household_by_token(new_user, token)
+            else:
+                flash(f"Welcome {new_user.username}!", 'success')
             return redirect(url_for('homepage'))
         else:
             flash('Username already exists.', 'danger')
+
+    token = request.args.get('token')
+
+    if token:
+        if current_user.is_authenticated:
+            return helpers.add_user_to_household_by_token(current_user, token)
+
+        session['registration_token'] = token
 
     return render_template('register.html')
 
