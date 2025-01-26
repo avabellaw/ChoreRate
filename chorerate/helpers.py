@@ -9,21 +9,21 @@ from datetime import datetime
 from flask import flash, redirect, url_for
 
 
-def get_household():
+def current_household():
     '''Get the household for the current user using cache'''
 
     household_cache = cache.get(f'household_{current_user.id}')
 
     # If cache is empty, get household_member from db and set cache
     if not household_cache:
-        household_member = get_household_member()
+        household_member = current_household_member()
         household_cache = Household.query.get(household_member.household_id)
         cache.set(f'household_{current_user.id}', household_cache)
 
     return household_cache
 
 
-def get_household_member():
+def current_household_member():
     '''Get the household member for the current user using cache'''
     household_member_cache = cache.get(f'household_member_{current_user.id}')
 
@@ -39,7 +39,7 @@ def get_household_member():
 
 def get_unrated_from_db():
     '''Get unrated chores for the current user'''
-    current_member_id = get_current_household_member().id
+    current_member_id = current_household_member().id
     rated = db.session.query(ChoreRating.chore_id).filter_by(household_member_id=current_member_id)
     unrated = db.session.query(Chore).filter(~Chore.id.in_(rated)).all()
 
@@ -77,8 +77,3 @@ def add_user_to_household_by_token(user, token):
         flash(f"Welcome {user.username}, you've been added to"
               + f" household '{household_name}'!", 'success')
         return redirect(url_for('homepage'))
-
-
-def get_current_household_member():
-    '''Get the household member object for a user'''
-    return HouseholdMember.query.filter_by(user_id=current_user.id).first()

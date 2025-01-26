@@ -10,32 +10,41 @@
     <h1>Rate Chores</h1>
 </div>
 
-<div id="rate-chores-container" class="hidden">
-    <p class="text-center">
-        <small><span id="chore-index">1</span> out of <span id="unrated-total"></span> unrated.</small>
-    </p>
-    <div id="chore">
-        <p id="chore-name"></p>
-        <p><span id="times-per-frequency">1</span>x per <span id="frequency">day</span></p>
+{% if not chores %}
+    <div class="text-center">
+        <p>No chores to rate.</p>
+        <a href="{{ url_for('manage') }}"><small>Add chores in Manage Chores first.</small></a>
     </div>
-    <br>
-    <div id="rate-btn-container">
-        {% for i in range(1, 11) %}
-            <button class="rate-btn" data-rate="{{ i }}">{{ i }}</button>
-        {% endfor %}
+{% else %}
+    <div id="rate-chores-container" class="hidden">
+        <p class="text-center">
+            <small><span id="chore-index">1</span> out of <span id="unrated-total"></span> unrated.</small>
+        </p>
+        <div id="chore">
+            <p id="chore-name"></p>
+            <p><span id="times-per-frequency">1</span>x per <span id="frequency">day</span></p>
+        </div>
+        <br>
+        <div id="rate-btn-container">
+            {% for i in range(1, 11) %}
+                <button class="rate-btn" data-rate="{{ i }}">{{ i }}</button>
+            {% endfor %}
+        </div>
+
+        <button class="btn btn--form hidden" id="back-btn">Back</button>
     </div>
 
-    <button class="btn btn--form hidden" id="back-btn">Back</button>
-</div>
+    <div id="loading-indicator">
+        <p>Loading...</p>
+    </div>
 
-<div id="loading-indicator">
-    <p>Loading...</p>
-</div>
-
-<p id="message" class="hidden text-center">No more chores left to rate.</p>
+    <p id="message" class="hidden text-center">No more chores left to rate.</p>
+{% endif %}
 
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ url_for('static', filename='js/rate-chores.js') }}"></script>
+    {% if chores %}
+        <script src="{{ url_for('static', filename='js/rate-chores.js') }}"></script>
+    {% endif %}
 {% endblock %}

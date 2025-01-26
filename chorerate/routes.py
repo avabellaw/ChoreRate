@@ -146,7 +146,7 @@ def get_registration_link():
 @login_required
 def rate():
     '''View for the rate page'''
-    current_member = helpers.get_current_household_member()
+    current_member = helpers.current_household_member()
 
     if request.method == 'POST':
         data = json.loads(request.data.decode('utf-8'))
@@ -168,7 +168,12 @@ def rate():
 
         return jsonify({'message': 'success'})
 
-    if len(helpers.get_unrated_from_db()) == 0:
+    household = helpers.current_household()
+    unrated_chores = helpers.get_unrated_from_db()
+
+    # If all chores have been rated, redirect to edit ratings
+    # Unless there are no chores in the household.
+    if len(unrated_chores) == 0 and not len(household.chores) == 0:
         rated_chores_rows = db.session.query(Chore, ChoreRating).join(
             ChoreRating).filter(
                 ChoreRating.household_member_id == current_member.id).all()
