@@ -1,12 +1,40 @@
 '''Helper functions'''
 
 from flask_login import current_user
-from chorerate import db
+from chorerate import db, cache
 from chorerate.models import Chore, ChoreRating, Household, RegistrationLink, \
     HouseholdMember
 
 from datetime import datetime
 from flask import flash, redirect, url_for
+
+
+def get_household():
+    '''Get the household for the current user using cache'''
+
+    household_cache = cache.get(f'household_{current_user.id}')
+
+    # If cache is empty, get household_member from db and set cache
+    if not household_cache:
+        household_member = get_household_member()
+        household_cache = Household.query.get(household_member.household_id)
+        cache.set(f'household_{current_user.id}', household_cache)
+
+    return household_cache
+
+
+def get_household_member():
+    '''Get the household member for the current user using cache'''
+    household_member_cache = cache.get(f'household_member_{current_user.id}')
+
+    # If cache is empty, get from db and set cache
+    if not household_member_cache:
+        household_member_cache = HouseholdMember.query.filter_by(
+            user_id=current_user.id).first()
+        cache.set(f'household_member_{current_user.id}',
+                  household_member_cache)
+
+    return household_member_cache
 
 
 def get_unrated_from_db():
