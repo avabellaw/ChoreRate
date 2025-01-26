@@ -71,7 +71,31 @@ def manage_household_members():
     household = db.session.query(Household)\
         .join(HouseholdMember)\
         .filter(HouseholdMember.user_id == current_user.id).first()
-    
+
+    if request.method == 'POST':
+        username = request.form['username']
+
+        user = User.query.filter_by(username=username).first()
+
+        if user:
+            print("user found")
+            if user == current_user:
+                flash("You cannot add yourself to your own household.", 'danger')
+                return redirect(url_for('manage_household_members'))
+            print("user not current user")
+            if user in household.members:
+                flash(f"User '{username}' is already a member of household '{household.name}'.", 'danger')
+                return redirect(url_for('manage_household_members'))
+            print("user not in household")
+
+            household_member = HouseholdMember(household_id=household.id,
+                                               user_id=user.id)
+            db.session.add(household_member)
+            db.session.commit()
+            flash(f"User '{username}' added to household '{household.name}' successfully!", 'success')
+        else:
+            flash(f"User '{username}' does not exist.", 'danger')
+
     members = household.members
 
     return render_template('household/manage-household-members.html',
