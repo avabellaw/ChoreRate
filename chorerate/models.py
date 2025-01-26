@@ -128,6 +128,15 @@ class AllocatedChore(db.Model):
                          nullable=False)
     due_date = db.Column(db.Date, nullable=False)
 
+    household_member = db.relationship('HouseholdMember',
+                                       backref='allocated_chores')
+
+    table_args = (
+        db.UniqueConstraint('household_member_id',
+                            'chore_id',
+                            name='unique_allocated_chore'),
+    )
+
     def __repr__(self):
         return f"<{self.user_id} has been allocated '{self.chore_id}'>"
 

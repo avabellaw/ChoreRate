@@ -49,7 +49,11 @@
             <li>
                 <span>
                     {{ chore.name }}
-                    {{ chore.allocation.user.username }}
+                    {% if chore.allocation %}
+                        {{ chore.allocation.household_member.username }}
+                    {% else %}
+                        <i>Unallocated</i>
+                    {% endif %}
                 </span>
                 <span>
                     {{ chore.times_per_frequency }}x

@@ -210,7 +210,10 @@ def manage():
         frequency_enum = FrequencyEnum(frequency)
         times_per_frequency = request.form['chore-times']
         duration_minutes = request.form['chore-duration']
-        new_chore = Chore(name=name, frequency=frequency_enum,
+        household_id = helpers.current_household().id
+        new_chore = Chore(household_id=household_id, 
+                          name=name,
+                          frequency=frequency_enum,
                           times_per_frequency=times_per_frequency,
                           duration_minutes=duration_minutes)
         db.session.add(new_chore)
@@ -220,8 +223,7 @@ def manage():
         return redirect(url_for('manage'))
     chores = Chore.query.all()
     member_id = helpers.current_household_member().id
-    allocations = AllocatedChore.query\
-        .filter_by(household_member_id=member_id).all()
+    allocations = AllocatedChore.query.filter_by(household_member_id=member_id).all()
     return render_template('manage.html',
                            chores=chores,
                            allocations=allocations)
