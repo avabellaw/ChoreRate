@@ -2,7 +2,12 @@ from flask import render_template, request, redirect, \
                   url_for, flash, jsonify, Blueprint
 from flask_login import login_required, current_user
 from chorerate import app, db
-from chorerate.models import Household, HouseholdMember, RegistrationLink, User
+
+# Models
+from chorerate.models.household import Household
+from chorerate.models.household_member import HouseholdMember
+from chorerate.models.registration_link import RegistrationLink
+from chorerate.models.user import User
 
 import secrets
 

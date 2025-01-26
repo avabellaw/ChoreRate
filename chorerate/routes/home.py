@@ -1,9 +1,12 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, Blueprint
 from flask_login import login_required, current_user
 from datetime import date
 from chorerate import db
-from chorerate.models import HouseholdMember, Chore, AllocatedChore
-from flask import Blueprint
+
+# Models
+from chorerate.models.household_member import HouseholdMember
+from chorerate.models.allocated_chore import AllocatedChore
+from chorerate.models.chore import Chore
 
 bp = Blueprint('home', __name__)
 

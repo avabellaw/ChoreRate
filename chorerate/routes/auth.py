@@ -2,8 +2,11 @@ from flask import render_template, request, redirect, \
                   url_for, flash, session, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+
 from chorerate import app, db
-from chorerate.models import User
+
+# Models
+from chorerate.models.user import User
 
 from chorerate import helpers
 

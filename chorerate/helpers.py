@@ -1,12 +1,18 @@
 '''Helper functions'''
 
+from flask import flash, redirect, url_for
 from flask_login import current_user
-from chorerate import db, cache
-from chorerate.models import Chore, ChoreRating, Household, RegistrationLink, \
-    HouseholdMember
 
 from datetime import datetime
-from flask import flash, redirect, url_for
+
+from chorerate import db, cache
+
+# Models
+from chorerate.models.chore import Chore
+from chorerate.models.household import Household
+from chorerate.models.household_member import HouseholdMember
+from chorerate.models.registration_link import RegistrationLink
+from chorerate.models.chore_rating import ChoreRating
 
 
 def current_household():
@@ -40,7 +46,8 @@ def current_household_member():
 def get_unrated_from_db():
     '''Get unrated chores for the current user'''
     current_member_id = current_household_member().id
-    rated = db.session.query(ChoreRating.chore_id).filter_by(household_member_id=current_member_id)
+    rated = db.session.query(ChoreRating.chore_id).filter_by(
+        household_member_id=current_member_id)
     unrated = db.session.query(Chore).filter(~Chore.id.in_(rated)).all()
 
     return unrated

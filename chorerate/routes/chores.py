@@ -3,7 +3,13 @@ from flask import Blueprint, render_template, request, \
 from flask_login import login_required
 from datetime import datetime
 from chorerate import db, app
-from chorerate.models import Chore, ChoreRating, AllocatedChore, FrequencyEnum
+
+# Models
+from chorerate.models.chore import Chore
+from chorerate.models.allocated_chore import AllocatedChore
+from chorerate.models.chore_rating import ChoreRating
+from chorerate.models import FrequencyEnum
+
 from chorerate import helpers
 import json
 
