@@ -10,7 +10,8 @@ from chorerate.models.allocated_chore import AllocatedChore
 from chorerate.models.chore_rating import ChoreRating
 from chorerate.models import FrequencyEnum
 
-from chorerate import helpers
+from chorerate.helpers import household_helpers as household_helper
+from chorerate.helpers import chore_helpers as chore_helper
 import json
 
 bp = Blueprint('chore', __name__)
@@ -20,7 +21,7 @@ bp = Blueprint('chore', __name__)
 @login_required
 def rate():
     '''View for the rate page'''
-    current_member = helpers.current_household_member()
+    current_member = household_helper.current_household_member()
 
     if request.method == 'POST':
         data = json.loads(request.data.decode('utf-8'))
@@ -42,8 +43,8 @@ def rate():
 
         return jsonify({'message': 'success'})
 
-    household = helpers.current_household()
-    unrated_chores = helpers.get_unrated_from_db()
+    household = household_helper.current_household()
+    unrated_chores = chore_helper.get_unrated_from_db()
 
     # If all chores have been rated, redirect to edit ratings
     # Unless there are no chores in the household.
@@ -67,7 +68,7 @@ def rate():
 @login_required
 def get_unrated():
     '''Get unrated chores for the current user for the rate chores page'''
-    unrated = helpers.get_unrated_from_db()
+    unrated = chore_helper.get_unrated_from_db()
     return jsonify([{'id': chore.id,
                      'name': chore.name,
                      'frequency': chore.frequency.value,
@@ -85,7 +86,7 @@ def manage():
         frequency_enum = FrequencyEnum(frequency)
         times_per_frequency = request.form['chore-times']
         duration_minutes = request.form['chore-duration']
-        household_id = helpers.current_household().id
+        household_id = household_helper.current_household().id
         new_chore = Chore(household_id=household_id,
                           name=name,
                           frequency=frequency_enum,
@@ -97,7 +98,7 @@ def manage():
             added successfully!", 'success')
         return redirect(url_for('manage'))
     chores = Chore.query.all()
-    member_id = helpers.current_household_member().id
+    member_id = household_helper.current_household_member().id
     allocations = AllocatedChore.query.filter_by(
         household_member_id=member_id).all()
     return render_template('chores/manage.html',
@@ -137,7 +138,7 @@ def edit_chore(chore_id):
         return redirect(url_for('manage'))
 
     chore = Chore.query.get(chore_id)
-    members = helpers.current_household().members
+    members = household_helper.current_household().members
     return render_template('chores/edit-chore.html',
                            chore=chore,
                            members=members)

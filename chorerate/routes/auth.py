@@ -8,7 +8,7 @@ from chorerate import app, db
 # Models
 from chorerate.models.user import User
 
-from chorerate import helpers
+from chorerate.helpers.household_helpers import add_user_to_household_by_token
 
 bp = Blueprint('auth', __name__)
 
@@ -38,10 +38,10 @@ def register():
             login_user(new_user)
 
             if token:
-                return helpers.add_user_to_household_by_token(new_user, token)
+                return add_user_to_household_by_token(new_user, token)
             else:
                 flash(f"Welcome {new_user.username}!", 'success')
-            return redirect(url_for('home.homepage'))
+            return redirect(url_for('home.homepage')) 
         else:
             flash('Username already exists.', 'danger')
 
@@ -49,7 +49,7 @@ def register():
 
     if token:
         if current_user.is_authenticated:
-            return helpers.add_user_to_household_by_token(current_user, token)
+            return add_user_to_household_by_token(current_user, token)
 
         session['registration_token'] = token
 
