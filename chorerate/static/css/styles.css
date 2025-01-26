@@ -231,6 +231,14 @@ a.small-link {
 
 /* MANAGE */
 
+#invite-link{
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    margin: 1em 0;
+    flex-wrap: wrap;
+}
+
 #add-chore-form {
     margin: 0 0.5em;
     margin-bottom: 1em;

@@ -10,7 +10,7 @@
     </div>
 
     <section>
-        <h2>Add a new member: </h2>
+        <h2>Add existing user as a member: </h2>
         <form class="form" method="POST">
             <div class="form-group">
                 <label for="username">Username:</label>
@@ -19,6 +19,14 @@
 
             <button type="submit" class="btn btn--form">Add member</button>
         </form>
+
+        <div id="invite-link">
+            <h2>Or register and add user:</h2>
+
+            <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token }}">
+            <input type="hidden" name="household-id" id="household-id" value="{{ household_id }}">
+            <button class="btn" id="registration-link-btn">Copy link</button>
+        </div>
     </section>
 
     <section>
@@ -41,4 +49,8 @@
             {% endfor %}
         </ul>
     </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/create-registration-link.js') }}"></script>
 {% endblock %}

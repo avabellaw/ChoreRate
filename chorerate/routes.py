@@ -9,9 +9,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from chorerate import app, db
 from chorerate.models import User, Chore, ChoreRating, AllocatedChore, \
-                             FrequencyEnum, Household, HouseholdMember
+                             FrequencyEnum, Household, HouseholdMember, \
+                             RegistrationLink
 
 from chorerate.helpers import get_unrated_from_db
+
+import secrets
 
 
 @app.route('/')
@@ -99,7 +102,26 @@ def manage_household_members():
     members = household.members
 
     return render_template('household/manage-household-members.html',
+                           household_id=household.id,
                            members=members)
+
+
+@app.route('/get-registration-link', methods=['POST'])
+@login_required
+def get_registration_link():
+    '''Create a registration link for the household'''
+    data = request.get_json()
+    household_id = data['household_id']
+    
+    token = secrets.token_urlsafe(16)
+    
+    new_link = RegistrationLink(token=token, household_id=household_id)
+    db.session.add(new_link)
+    db.session.commit()
+
+    # Take to user registration page
+    registration_link = url_for('register', token=token, _external=True)
+    return jsonify({'success': True, 'registration_link': registration_link})
 
 
 @app.route('/rate', methods=['GET', 'POST'])
