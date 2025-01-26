@@ -26,33 +26,56 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
 
-    allocated_chore = db.relationship('AllocatedChore',
-                                      backref='user',
-                                      uselist=False)
-
 
 class Household(db.Model):
     '''Model for the household table'''
     __tablename__ = 'households'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
-    
+
     chores = db.relationship('Chore', backref='household')
+    members = db.relationship('HouseholdMember', backref='household')
 
 
 class HouseholdMember(db.Model):
+    '''Model for the household member table'''
+    __tablename__ = 'household_members'
     id = db.Column(db.Integer, primary_key=True)
     household_id = db.Column(db.Integer,
                              db.ForeignKey('households.id'),
                              nullable=False)
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id'),
-                        nullable=False)
+                        nullable=False,
+                        unique=True)
+
+    user = db.relationship('User', backref='household_member')
+
     __table_args__ = (
         db.UniqueConstraint('household_id',
                             'user_id',
                             name='unique_household_member'),
     )
+
+
+class RegistrationLink(db.Model):
+    '''Model for household registration links'''
+    __tablename__ = 'registration_links'
+    id = db.Column(db.Integer, primary_key=True)
+    token = db.Column(db.String(32), unique=True, nullable=False)
+    household_id = db.Column(db.Integer,
+                             db.ForeignKey('households.id'),
+                             nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    expires_at = db.Column(db.DateTime,
+                           default=lambda: datetime.utcnow()
+                           + timedelta(days=7))
+
+    household = db.relationship('Household', backref='invites')
+
+    def has_expired(self):
+        '''Check if the registration link has expired'''
+        return self.expires_at < datetime.now()
 
 
 class Chore(db.Model):
@@ -79,7 +102,7 @@ class ChoreRating(db.Model):
     '''Model for the chore rating table'''
     __tablename__ = 'chore_ratings'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    household_member_id = db.Column(db.Integer, db.ForeignKey('household_members.id'), nullable=False)
     chore_id = db.Column(db.Integer,
                          db.ForeignKey('chores.id'),
                          nullable=False)
@@ -97,9 +120,23 @@ class AllocatedChore(db.Model):
     '''Model for the allocated chore table'''
     __tablename__ = 'allocated_chores'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    chore_id = db.Column(db.Integer, db.ForeignKey('chores.id'), nullable=False)
-    due_date = db.Column(db.Date, nullable=False)
+    household_member_id = db.Column(db.Integer,
+                                    db.ForeignKey('household_members.id'),
+                                    nullable=False)
+    chore_id = db.Column(db.Integer,
+                         db.ForeignKey('chores.id'),
+                         nullable=False)
+    
+    due_date = db.Column(db.DateTime, nullable=True)
+
+    household_member = db.relationship('HouseholdMember',
+                                       backref='allocated_chores')
+
+    table_args = (
+        db.UniqueConstraint('household_member_id',
+                            'chore_id',
+                            name='unique_allocated_chore'),
+    )
 
     def __repr__(self):
         return f"<{self.user_id} has been allocated '{self.chore_id}'>"

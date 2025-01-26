@@ -4,6 +4,10 @@ body {
     padding: 0;
 }
 
+option.disabled {
+    color: #a7a7a7;
+}
+
 /* HELPERS */
 
 .text-center {
@@ -41,21 +45,80 @@ body {
     display: inline-block;
 }
 
-#nav-links {
+button.dropdown-btn {
+    background: none;
+    border: none;
+    font-size: 1em;
+    padding: 0;
+}
+
+button.dropdown-btn:hover {
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    text-align: center;
+}
+
+.dropdown > .dropdown-content-container {
+    padding-top: 0.5em;
+    display: none;
+    position: absolute;
+    min-width: 100%;
+    right: 0;
+}
+
+.dropdown .dropdown-content {
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    width: fit-content;
+    justify-content: center;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px -3px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin-top: 0.5em;
+    border-radius: 0 0 1em 1em;
+    padding: 2px;
+}
+
+.dropdown .dropdown-content > .nav-link {
+    border: none;
+    margin-left: 0;
+    display: flex;
+    white-space: nowrap;
+}
+
+.dropdown:hover .dropdown-content-container {
+    display: flex;
+}
+
+#nav-link-container {
     display: flex;
     align-items: center;
     column-gap: 0.5em;
 }
 
-#nav-links a {
+.nav-link, .dropdown {
     padding: 0.3em 0.5em;
     border-radius: 10%;
     border-bottom: 1px solid #0000003b;
 }
 
-#nav-links a:hover {
-    transform: scale(1.001);
+.nav-link:hover, .dropdown:hover {
     border-color: #000000a4;
+}
+
+.dropdown-content > .nav-link:hover {
+    background-color: #ffffff;
+}
+
+#nav-link-container > .nav-link:hover {
+    transform: scale(1.001);
 }
 
 #logo {
@@ -97,6 +160,10 @@ body {
     overflow: hidden;
 }
 
+#page-header {
+    margin-bottom: 3em;
+}
+
 #page-header > h1 {
     text-align: center;
     text-transform: capitalize;
@@ -107,7 +174,7 @@ body {
         max-width: 600px;
     }
 
-    #nav-links a {
+    .nav-link, .dropdown {
         padding: 0.5em 0.8em;
         margin-left: 0.5em;
     }
@@ -148,12 +215,11 @@ body {
 .btn {
     width: fit-content;
     padding: 0.4em 2em;
-    margin: auto;
     background-color: #000000d2;
     color: #fff;
     border-radius: 0.5em;
     border: none;
-    font-weight: 600;    
+    font-weight: 600;  
 }
 
 .btn:hover {
@@ -168,6 +234,14 @@ a.small-link {
 }
 
 /* MANAGE */
+
+#invite-link{
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    margin: 1em 0;
+    flex-wrap: wrap;
+}
 
 #add-chore-form {
     margin: 0 0.5em;
