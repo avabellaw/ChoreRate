@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ super() }} - Add a household member
+{% endblock %}
+
+{% block content %}
+    <div id="page-header">
+        <h1>Manage household members</h1>
+    </div>
+
+    <section>
+        <h2>Add a new member: </h2>
+        <form class="form" method="POST">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <button type="submit" class="btn btn--form">Add member</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Current members:</h2>
+        <ul class="member-list">
+            {% for member in members %}
+                <li>
+                    <span>
+                        {% if member.id == current_user.id %}
+                            You ({{ member.user.username }})
+                        {% else %}
+                            {{ member.user.username }}
+                        {% endif %}
+                    </span>
+
+                    <span>
+                        
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock %}

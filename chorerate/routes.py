@@ -64,6 +64,20 @@ def create_household():
     return render_template('household/create-household.html')
 
 
+@app.route('/add-household-members', methods=['GET', 'POST'])
+@login_required
+def manage_household_members():
+    '''View for the add household members page'''
+    household = db.session.query(Household)\
+        .join(HouseholdMember)\
+        .filter(HouseholdMember.user_id == current_user.id).first()
+    
+    members = household.members
+
+    return render_template('household/manage-household-members.html',
+                           members=members)
+
+
 @app.route('/rate', methods=['GET', 'POST'])
 @login_required
 def rate():
