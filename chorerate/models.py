@@ -34,6 +34,7 @@ class Household(db.Model):
     name = db.Column(db.String(20), nullable=False)
 
     chores = db.relationship('Chore', backref='household')
+    members = db.relationship('HouseholdMember', backref='household')
 
 
 class HouseholdMember(db.Model):
@@ -45,7 +46,11 @@ class HouseholdMember(db.Model):
                              nullable=False)
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id'),
-                        nullable=False)
+                        nullable=False,
+                        unique=True)
+
+    user = db.relationship('User', backref='household_member')
+
     __table_args__ = (
         db.UniqueConstraint('household_id',
                             'user_id',
