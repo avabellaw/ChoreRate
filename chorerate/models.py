@@ -73,6 +73,10 @@ class RegistrationLink(db.Model):
 
     household = db.relationship('Household', backref='invites')
 
+    def has_expired(self):
+        '''Check if the registration link has expired'''
+        return self.expires_at < datetime.now()
+
 
 class Chore(db.Model):
     '''Model for the chore table'''

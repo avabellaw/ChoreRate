@@ -113,6 +113,23 @@ def get_registration_link():
     data = request.get_json()
     household_id = data['household_id']
 
+    registration_link_record = RegistrationLink.query.filter_by(
+        household_id=household_id).first()
+
+    if registration_link_record:
+        if registration_link_record.has_expired():
+            # Link has expired, continue to generate a new one
+            db.session.delete(registration_link_record)
+            db.session.commit()
+        else:
+            # Return existing link
+            registration_link = url_for(
+                'register',
+                token=registration_link_record.token,
+                _external=True)
+            return jsonify({'success': True,
+                            'registration_link': registration_link})
+
     token = secrets.token_urlsafe(16)
 
     new_link = RegistrationLink(token=token, household_id=household_id)
@@ -121,6 +138,7 @@ def get_registration_link():
 
     # Take to user registration page
     registration_link = url_for('register', token=token, _external=True)
+
     return jsonify({'success': True, 'registration_link': registration_link})
 
 
