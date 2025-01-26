@@ -6,15 +6,6 @@
 
 ### Setup
 
-### Households 
-
-A household is created by a user, who then becomes a household member. 
-It is given a **name** and a **password**.
-
-Household members can then add new users as house members.
-
-Households will cease to exist if there are no more members. There will be a warning when the last user tries to leave.
-
 ### Features
 
 * Each user rates chores.
@@ -26,6 +17,78 @@ Households will cease to exist if there are no more members. There will be a war
 * After rating chores, show what you've rated.
   * Replace "no more chores" message with this.
 * Household chores can be backed up and even imported into new households.
+
+### User stories 
+
+1. **User Registration and Login**
+   * As a new user, I want to register for an account
+   * As a registered user, I want to log in so that I can access my account and manage chores.
+
+2. **Household Creation and Management**
+   * As a user, I want to create a household so that I can become a household member.
+   * As a household member, I want to add new users to my household as household members so that they can rate chores and be assigned them.
+   * As a household member, I want to leave a household so that I am no longer part of it.
+   * As a household member, I want to receive a warning when I am the last member trying to leave a household so that I'm aware the household will be deleted.
+
+3. **Chore Management**
+   * As a household member, I want to add new chores so that they can be assigned to household members.
+   * As a household member, I want to edit existing chores so that I can update their details.
+   * As a household member, I want to delete chores so that they are no longer part of the household's chore list.
+
+4. **Chore Rating and Allocation**
+   * As a household member, I want to rate chores so that the system can allocate chores based on preferences.
+   * As a household member, I want to view my chore ratings so that I can see what I have rated.
+   * As a household member, I want chores to be allocated each week based on ratings so that chores are distributed fairly.
+
+5. **Chore Frequency and Scheduling**
+   * As a household member, I want to set the frequency of chores (daily, weekly, monthly) so that they are scheduled appropriately.
+   * As a household member, I want to set the times per frequency (e.g., 3x every week) so that chores are repeated as needed.
+   * As a household member, I want to view the chore schedule so that I know when chores are due.
+
+6. **Notifications and Reminders**
+   * As a household member, I want to receive notifications when chores are due so that I don't forget to complete them.
+
+7. **Household Backup and Import**
+   * As a household member, I want to back up household chores so that I can restore them if needed.
+   * As a household member, I want to import household chores into a new household so that I can reuse existing chore setups.
+
+8.  **User Experience and Interface**
+    * As a user, I want a user-friendly interface so that I can easily navigate and use the application.
+    * As a user, I want to access the application on different devices (e.g., desktop, mobile) so that I can manage chores from anywhere.
+
+### Sprints
+
+#### Sprint 1: User Registration and Login
+* User registration form
+* Backend logic for user registration
+* User login form
+* Backend logic for user login
+
+#### Sprint 2: Household Creation and Management
+* Household creation form
+* Backend logic for household creation
+* Form to add new users to household
+* Backend logic to add users to household
+
+#### Sprint 3: Chore Management
+* Form to add new chores
+* Backend logic to add chores
+* Form to edit existing chores
+* Backend logic to update chores
+* Form to delete chores
+* Backend logic to delete chores
+
+#### Sprint 4: Chore Rating
+* Form to rate chores
+* Backend logic to save chore ratings
+
+#### Sprint 5: Chore Allocated
+
+* Algorithm to allocate chores based on ratings.
+* Update the allocations monthly.
+* Add a chore weighting to correctly balance chores.
+  * For example, monthly chores may need to change user.
+* Display allocated chores to users
 
 ### Wireframe
 
