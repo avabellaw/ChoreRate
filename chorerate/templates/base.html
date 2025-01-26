@@ -15,13 +15,13 @@
                 <div class="container">
                     <div id="nav-container">
                         <div id="logo">
-                            <a href="{{ url_for('homepage') }}">
+                            <a href="{{ url_for('home.homepage') }}">
                                 <img width="60" height="30" src="{{ url_for('static', filename='images/logo.webp') }}" alt="">
                             </a>
                         </div>
                         {% if current_user.is_authenticated %}
                         <div id="nav-link-container">
-                            <a class="nav-link" href="{{ url_for('rate') }}">Rate Chores</a>
+                            <a class="nav-link" href="{{ url_for('chore.rate') }}">Rate Chores</a>
                             <div class="dropdown">
                                 <button class="dropdown-btn">Household</button>
                                 <div class="dropdown-content-container">

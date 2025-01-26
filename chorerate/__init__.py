@@ -22,4 +22,5 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-from chorerate import routes # noqa - imports routes from routes.py
+from chorerate.routes import init_app as init_routes # noqa
+init_routes(app)
