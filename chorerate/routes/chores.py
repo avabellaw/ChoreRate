@@ -57,9 +57,10 @@ def rate():
                          'rating': rating.rating,
                          'duration_minutes': chore.duration_minutes}
                         for chore, rating in rated_chores_rows]
-        return render_template('edit-ratings.html', rated_chores=rated_chores)
+        return render_template('chores/edit-ratings.html',
+                               rated_chores=rated_chores)
 
-    return render_template('rate-chores.html')
+    return render_template('chores/rate-chores.html')
 
 
 @app.route('/rate/get-unrated')
@@ -99,7 +100,7 @@ def manage():
     member_id = helpers.current_household_member().id
     allocations = AllocatedChore.query.filter_by(
         household_member_id=member_id).all()
-    return render_template('manage.html',
+    return render_template('chores/manage.html',
                            chores=chores,
                            allocations=allocations)
 
@@ -137,4 +138,6 @@ def edit_chore(chore_id):
 
     chore = Chore.query.get(chore_id)
     members = helpers.current_household().members
-    return render_template('edit-chore.html', chore=chore, members=members)
+    return render_template('chores/edit-chore.html',
+                           chore=chore,
+                           members=members)

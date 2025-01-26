@@ -24,7 +24,7 @@ def register():
 
         if password != confirm_password:
             flash('Passwords do not match.', 'danger')
-            return render_template('register.html', username=username)
+            return render_template('auth/register.html', username=username)
 
         hashed_password = generate_password_hash(
             password, method='pbkdf2:sha256')
@@ -41,7 +41,7 @@ def register():
                 return helpers.add_user_to_household_by_token(new_user, token)
             else:
                 flash(f"Welcome {new_user.username}!", 'success')
-            return redirect(url_for('homepage'))
+            return redirect(url_for('home.homepage'))
         else:
             flash('Username already exists.', 'danger')
 
@@ -53,7 +53,7 @@ def register():
 
         session['registration_token'] = token
 
-    return render_template('register.html')
+    return render_template('auth/register.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -68,14 +68,14 @@ def login():
                 flash(f"Welcome {user.username}!", 'success')
                 login_user(user)
 
-                return redirect(url_for('homepage'))
+                return redirect(url_for('home.homepage'))
             else:
                 flash('Incorrect password.', 'danger')
         else:
             flash('User does not exist.', 'danger')
 
         return redirect(url_for('login'))
-    return render_template('login.html')
+    return render_template('auth/login.html')
 
 
 @app.route('/logout')

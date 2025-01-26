@@ -19,7 +19,7 @@ def homepage():
         .filter_by(user_id=current_user.id).first()
 
     if not household_member:
-        return redirect(url_for('create_household'))
+        return redirect(url_for('household.create_household'))
 
     member_id = household_member.id
     chores = db.session.query(Chore, AllocatedChore)\
