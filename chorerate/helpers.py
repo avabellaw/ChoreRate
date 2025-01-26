@@ -11,8 +11,8 @@ from flask import flash, redirect, url_for
 
 def get_unrated_from_db():
     '''Get unrated chores for the current user'''
-    user_id = current_user.id
-    rated = db.session.query(ChoreRating.chore_id).filter_by(user_id=user_id)
+    current_member_id = get_current_household_member().id
+    rated = db.session.query(ChoreRating.chore_id).filter_by(household_member_id=current_member_id)
     unrated = db.session.query(Chore).filter(~Chore.id.in_(rated)).all()
 
     return unrated
@@ -49,3 +49,8 @@ def add_user_to_household_by_token(user, token):
         flash(f"Welcome {user.username}, you've been added to"
               + f" household '{household_name}'!", 'success')
         return redirect(url_for('homepage'))
+
+
+def get_current_household_member():
+    '''Get the household member object for a user'''
+    return HouseholdMember.query.filter_by(user_id=current_user.id).first()

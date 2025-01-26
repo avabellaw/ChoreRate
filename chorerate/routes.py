@@ -146,19 +146,22 @@ def get_registration_link():
 @login_required
 def rate():
     '''View for the rate page'''
+    current_member = helpers.get_current_household_member()
+
     if request.method == 'POST':
         data = json.loads(request.data.decode('utf-8'))
         rating, chord_id = map(int, data.values())
 
         existing_rating = db.session.query(ChoreRating).filter_by(
-            user_id=current_user.id, chore_id=chord_id).first()
+            household_member_id=current_member.id, chore_id=chord_id).first()
 
         if existing_rating:
             existing_rating.rating = rating
         else:
-            new_rating = ChoreRating(user_id=current_user.id,
-                                     chore_id=chord_id,
-                                     rating=rating)
+            new_rating = ChoreRating(
+                household_member_id=current_member.id,
+                chore_id=chord_id,
+                rating=rating)
 
             db.session.add(new_rating)
         db.session.commit()
@@ -167,7 +170,9 @@ def rate():
 
     if len(helpers.get_unrated_from_db()) == 0:
         rated_chores_rows = db.session.query(Chore, ChoreRating).join(
-            ChoreRating).filter(ChoreRating.user_id == current_user.id).all()
+            ChoreRating).filter(
+                ChoreRating.household_member_id == current_member.id).all()
+
         rated_chores = [{'id': chore.id,
                          'name': chore.name,
                          'rating': rating.rating,

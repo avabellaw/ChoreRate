@@ -22,7 +22,6 @@
                         {% if current_user.is_authenticated %}
                         <div id="nav-link-container">
                             <a class="nav-link" href="{{ url_for('rate') }}">Rate Chores</a>
-                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
                             <div class="dropdown">
                                 <button class="dropdown-btn">Household</button>
                                 <div class="dropdown-content-container">
@@ -32,6 +31,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
                         </div>
                         {% endif %}
                     </div>
