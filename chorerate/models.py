@@ -120,8 +120,12 @@ class AllocatedChore(db.Model):
     '''Model for the allocated chore table'''
     __tablename__ = 'allocated_chores'
     id = db.Column(db.Integer, primary_key=True)
-    Household_member_id = db.Column(db.Integer, db.ForeignKey('household_members.id'), nullable=False)
-    chore_id = db.Column(db.Integer, db.ForeignKey('chores.id'), nullable=False)
+    household_member_id = db.Column(db.Integer,
+                                    db.ForeignKey('household_members.id'),
+                                    nullable=False)
+    chore_id = db.Column(db.Integer,
+                         db.ForeignKey('chores.id'),
+                         nullable=False)
     due_date = db.Column(db.Date, nullable=False)
 
     def __repr__(self):

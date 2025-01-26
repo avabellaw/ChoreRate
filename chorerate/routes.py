@@ -219,7 +219,9 @@ def manage():
             added successfully!", 'success')
         return redirect(url_for('manage'))
     chores = Chore.query.all()
-    allocations = AllocatedChore.query.filter_by(user_id=current_user.id).all()
+    member_id = helpers.current_household_member().id
+    allocations = AllocatedChore.query\
+        .filter_by(household_member_id=member_id).all()
     return render_template('manage.html',
                            chores=chores,
                            allocations=allocations)
