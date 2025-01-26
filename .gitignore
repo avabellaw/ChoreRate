@@ -1,4 +1,4 @@
 .dist
 venv/
-env.py
+/env.py
 __pycache__/
