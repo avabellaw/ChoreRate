@@ -23,10 +23,14 @@
 * Ratings are normalized
   * This levels out differences in ratings eg. if someone votes very high and very low vs someone voting in smaller differences.
 * Distribution
-  * Distrbuted based on a weighting of each chore (rating and duration). This equally distributes chores.
+  * Distrubuted so that chore duration total is equal for each member.
+  * Each chore has a duration factor, duration / frequency (daily: 1, weekly: 7, monthly: 28).
+  * Each user has a weighting created for each chore. This is rating * duration factor.
     * Starts with daily then weekly and monthly. 
     * Each members previously attributed weighting is taken in account after daily (the difference from the person with the heighest weighting).
-  * A weighing for each member is created for each chore. This takes in account the duration * frequency and the rating given.
+  * Chores are distrubted to the highest possible equal member weighting.
+    * Could use Python itertool.combination and take the highest most equal.
+    * or by using linear programming optimisation
   * Chores are distributed in a way that prioritizes no one getting their least rated chore. Aims to get everyone the chores they want while balancing satisfaction.
 * Each household member has a weighting
   * This is determined by duration * frequency of the chore and also how it was rated by the member.
