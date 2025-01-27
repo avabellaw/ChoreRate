@@ -33,7 +33,7 @@ def create_household():
         db.session.commit()
 
         flash(f"Household '{household_name}' created successfully!", 'success')
-        return redirect(url_for('homepage'))
+        return redirect(url_for('home.homepage'))
     return render_template('household/create-household.html')
 
 

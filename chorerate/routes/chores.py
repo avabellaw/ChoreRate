@@ -97,7 +97,8 @@ def manage():
         flash(f"Chore #{new_chore.id} - '{name.lower()}' \
             added successfully!", 'success')
         return redirect(url_for('manage'))
-    chores = Chore.query.all()
+    household_id = household_helper.current_household().id
+    chores = Chore.query.filter_by(household_id=household_id).all()
     member_id = household_helper.current_household_member().id
     allocations = AllocatedChore.query.filter_by(
         household_member_id=member_id).all()
