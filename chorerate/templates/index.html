@@ -63,5 +63,13 @@
             </ul>
         {% endif %}
     </section>
+
+    <section>
+        <h2>Chore schedule</h2>
+        {% for chore, allocation in chores %}
+            <h3>{{ chore.name }}</h3>
+            <p>Chore due: {{ allocation.due_date }}</p>
+        {% endfor %}
+    </section>
 </div>    
 {% endblock %}
