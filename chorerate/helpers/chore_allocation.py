@@ -4,6 +4,7 @@ from chorerate.models.household_member import HouseholdMember
 from chorerate.models.chore import Chore
 from chorerate.models.chore_rating import ChoreRating
 from chorerate.models.allocated_chore import AllocatedChore
+from chorerate.models.household import Household
 from chorerate.models import FrequencyEnum
 
 import numpy as np
@@ -100,9 +101,12 @@ def allocate_chores(household_id):
     assignments = np.reshape(res.x, (num_chores, num_members))
 
     for i, chore in enumerate(chores):
+        chore.initialize_last_scheduled()
         for j, member in enumerate(members):
             if assignments[i, j] > 0.5:  # Binary problem; values close to 1 indicate assignment
                 assignment = AllocatedChore(chore_id=chore.id,
                                             household_member_id=member.id)
                 db.session.add(assignment)
                 db.session.commit()
+
+    Household.query.get(household_id).chore_allocation_complete()

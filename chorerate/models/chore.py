@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from chorerate import db
 from sqlalchemy import Enum
 from . import FrequencyEnum
@@ -14,11 +16,28 @@ class Chore(db.Model):
     frequency = db.Column(Enum(FrequencyEnum), nullable=False)
     times_per_frequency = db.Column(db.SmallInteger, nullable=False)
     duration_minutes = db.Column(db.SmallInteger, nullable=False)
-    last_scheduled = db.Column(db.DateTime, nullable=True)
+    last_scheduled = db.Column(db.Date, nullable=True)
 
     allocation = db.relationship('AllocatedChore',
                                  backref='chore',
                                  uselist=False)
+
+    def initialize_last_scheduled(self):
+        if self.last_scheduled is None:
+            self.set_last_scheduled_today()
+            self.last_scheduled = self.get_next_due()
+
+    def get_next_due(self):
+        match (self.frequency):
+            case FrequencyEnum.DAILY:
+                return self.last_scheduled + timedelta(days=1)
+            case FrequencyEnum.WEEKLY:
+                return self.last_scheduled + timedelta(weeks=1)
+            case FrequencyEnum.MONTHLY:
+                return self.last_scheduled + timedelta(months=1)
+
+    def set_last_scheduled_today(self):
+        self.last_scheduled = datetime.now().date()
 
     def __repr__(self):
         return f"<{self.name} {self.frequency} - {self.times_per_frequency}x>"
