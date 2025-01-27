@@ -10,7 +10,7 @@
     <h1>Rate Chores</h1>
 </div>
 
-{% if not chores %}
+{% if not has_chores %}
     <div class="text-center">
         <p>No chores to rate.</p>
         <a href="{{ url_for('manage') }}"><small>Add chores in Manage Chores first.</small></a>
@@ -44,7 +44,7 @@
 {% endblock %}
 
 {% block scripts %}
-    {% if chores %}
+    {% if has_chores %}
         <script src="{{ url_for('static', filename='js/rate-chores.js') }}"></script>
     {% endif %}
 {% endblock %}

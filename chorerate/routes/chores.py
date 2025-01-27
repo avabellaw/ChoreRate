@@ -61,7 +61,9 @@ def rate():
         return render_template('chores/edit-ratings.html',
                                rated_chores=rated_chores)
 
-    return render_template('chores/rate-chores.html')
+    # If has chores and they are unrated
+    has_chores = len(household.chores) > 0
+    return render_template('chores/rate-chores.html', has_chores=has_chores)
 
 
 @app.route('/rate/get-unrated')
