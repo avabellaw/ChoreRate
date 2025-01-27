@@ -14,6 +14,7 @@ class Chore(db.Model):
     frequency = db.Column(Enum(FrequencyEnum), nullable=False)
     times_per_frequency = db.Column(db.SmallInteger, nullable=False)
     duration_minutes = db.Column(db.SmallInteger, nullable=False)
+    last_scheduled = db.Column(db.DateTime, nullable=True)
 
     allocation = db.relationship('AllocatedChore',
                                  backref='chore',
