@@ -94,7 +94,7 @@ def get_registration_link():
         else:
             # Return existing link
             registration_link = url_for(
-                'register',
+                'auth.register',
                 token=registration_link_record.token,
                 _external=True)
             return jsonify({'success': True,
@@ -107,6 +107,6 @@ def get_registration_link():
     db.session.commit()
 
     # Take to user registration page
-    registration_link = url_for('register', token=token, _external=True)
+    registration_link = url_for('auth.register', token=token, _external=True)
 
     return jsonify({'success': True, 'registration_link': registration_link})
