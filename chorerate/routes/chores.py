@@ -61,7 +61,7 @@ def rate():
         return render_template('chores/edit-ratings.html',
                                rated_chores=rated_chores)
 
-    # If has chores and they are unrated
+    # If has chores and there are unrated chores, render the rate page
     has_chores = len(household.chores) > 0
     return render_template('chores/rate-chores.html', has_chores=has_chores)
 
