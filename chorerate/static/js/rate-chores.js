@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error fetching unrated chores:', error));
     
     // Add event listeners to rate buttons
-    let buttons = document.getElementById('rate-btn-container').children;
+    let buttons = document.getElementsByClassName('rate-btn-container')[0].children;
     for (let button of buttons) {
         button.addEventListener('click', function() {
             chooseRating(this);
