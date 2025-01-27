@@ -332,7 +332,7 @@ a.small-link {
     text-align: center;
 }
 
-#rate-btn-container {
+.rate-btn-container {
     display: flex;
     width: 100%;
     max-width: 350px;

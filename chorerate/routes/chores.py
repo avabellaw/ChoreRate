@@ -58,6 +58,8 @@ def rate():
                          'rating': rating.rating,
                          'duration_minutes': chore.duration_minutes}
                         for chore, rating in rated_chores_rows]
+
+        rated_chores.sort(key=lambda x: x['name'])
         return render_template('chores/edit-ratings.html',
                                rated_chores=rated_chores)
 
