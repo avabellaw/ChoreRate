@@ -25,18 +25,16 @@
 * Distribution
   * Distrubuted so that chore duration total is equal for each member.
   * Each chore has a duration factor, duration / frequency (daily: 1, weekly: 7, monthly: 28).
-  * Each user has a weighting created for each chore. This is rating * duration factor.
-    * Starts with daily then weekly and monthly. 
-    * Each members previously attributed weighting is taken in account after daily (the difference from the person with the heighest weighting).
+  * Each user has a weighting created for each chore using rating and duration factor.
   * Chores are distrubted to the highest possible equal member weighting.
-    * Could use Python itertool.combination and take the highest most equal.
-    * or by using linear programming optimisation
+    * Using linear programming optimisation
   * Chores are distributed in a way that prioritizes no one getting their least rated chore. Aims to get everyone the chores they want while balancing satisfaction.
-* Each household member has a weighting
-  * This is determined by duration * frequency of the chore and also how it was rated by the member.
-  * This is so that weekly and monthly chores can be distrubed fairly.
-    * This then covers cases where the number of chores don't divide nealty between the number of members.
-  * A new member will receive the same rating as the member who has the lowest.
+  * Each time chores are distributed, the last run variable is taken in account to work out how many chores were completed.
+    * Chores are then adjusted this time around incase chore satisfaction or duration was unequal previously.
+
+* How chore due dates are worked out
+  * Each chore has a last scheduled attribute. This is used to work out when it is next due to be done.
+  * If empty, the chore is scheduled for the next cycle, eg the next day, a weeek from now or 4 weeks from now.
 
 ### User stories 
 
