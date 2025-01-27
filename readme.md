@@ -18,6 +18,22 @@
   * Replace "no more chores" message with this.
 * Household chores can be backed up and even imported into new households.
 
+#### Backend - How chores will be distrubuted
+
+* Ratings are normalized
+  * This levels out differences in ratings eg. if someone votes very high and very low vs someone voting in smaller differences.
+* Distribution
+  * Distrbuted based on a weighting of each chore (rating and duration). This equally distributes chores.
+    * Starts with daily then weekly and monthly. 
+    * Each members previously attributed weighting is taken in account after daily (the difference from the person with the heighest weighting).
+  * A weighing for each member is created for each chore. This takes in account the duration * frequency and the rating given.
+  * Chores are distributed in a way that prioritizes no one getting their least rated chore. Aims to get everyone the chores they want while balancing satisfaction.
+* Each household member has a weighting
+  * This is determined by duration * frequency of the chore and also how it was rated by the member.
+  * This is so that weekly and monthly chores can be distrubed fairly.
+    * This then covers cases where the number of chores don't divide nealty between the number of members.
+  * A new member will receive the same rating as the member who has the lowest.
+
 ### User stories 
 
 1. **User Registration and Login**
@@ -58,19 +74,19 @@
 
 ### Sprints
 
-#### Sprint 1: User Registration and Login
+#### User Registration and Login
 * User registration form
 * Backend logic for user registration
 * User login form
 * Backend logic for user login
 
-#### Sprint 2: Household Creation and Management
+#### Household Creation and Management
 * Household creation form
 * Backend logic for household creation
 * Form to add new users to household
 * Backend logic to add users to household
 
-#### Sprint 3: Chore Management
+#### Chore Management
 * Form to add new chores
 * Backend logic to add chores
 * Form to edit existing chores
@@ -78,11 +94,11 @@
 * Form to delete chores
 * Backend logic to delete chores
 
-#### Sprint 4: Chore Rating
+#### Chore Rating
 * Form to rate chores
 * Backend logic to save chore ratings
 
-#### Sprint 5: Chore Allocated
+#### Chore Allocated
 
 * Algorithm to allocate chores based on ratings.
 * Update the allocations monthly.
