@@ -3,10 +3,11 @@
     display: none;
     position: absolute;
     transform: translateX(-50%);
-    background-color: #4caf50;
-    color: white;
+    background-color: #ffffff;
+    border: 2px dotted #0044bd;
+    color: #151515;
     padding: 5px 10px;
-    border-radius: 5px;
+    border-radius: 9px;
     white-space: nowrap;
     font-size: 14px;
     opacity: 0;
