@@ -1,5 +1,7 @@
+import btnClickMsg from "./btn-click-msg.js";
+
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('registration-link-btn').addEventListener('click', function() {
+    document.getElementById('registration-link-btn').addEventListener('click', function(event) {
         fetch('/get-registration-link', {
             method: 'POST',
             headers: {
@@ -13,9 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                link = data.registration_link;
+                let link = data.registration_link;
                 navigator.clipboard.writeText(link).then(() => {
-                    console.log('Text copied to clipboard');
+                    btnClickMsg(this, event);
                 }).catch(err => {
                     console.error('Failed to copy: ', err);
                 });

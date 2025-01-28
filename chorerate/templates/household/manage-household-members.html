@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/btn-click-msg.css') }}">
+{% endblock %}
+
 {% block title %}
 {{ super() }} - Add a household member
 {% endblock %}
@@ -25,7 +29,8 @@
 
             <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token }}">
             <input type="hidden" name="household-id" id="household-id" value="{{ household_id }}">
-            <button class="btn" id="registration-link-btn">Copy link</button>
+            <button class="btn" id="registration-link-btn" data-click-msg="#link-copied">Copy link</button>
+            <span class="click-msg" id="link-copied">Link copied!</span>
         </div>
     </section>
 
@@ -52,5 +57,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ url_for('static', filename='js/create-registration-link.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/create-registration-link.js') }}"></script>
 {% endblock %}
