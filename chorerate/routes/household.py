@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, \
-                  url_for, flash, jsonify, Blueprint
+    url_for, flash, jsonify, Blueprint
 from flask_login import login_required, current_user
 from chorerate import app, db
 
@@ -9,9 +9,26 @@ from chorerate.models.household_member import HouseholdMember
 from chorerate.models.registration_link import RegistrationLink
 from chorerate.models.user import User
 
+from chorerate.helpers.household_helpers import current_household
+from chorerate.helpers.chore_allocation import allocate_chores
+
 import secrets
 
 bp = Blueprint('household', __name__)
+
+
+@bp.route('/run-chore-allocation', methods=['POST'])
+@login_required
+def run_chore_allocation():
+    '''View to the run chore allocation'''
+    household = current_household()
+    try:
+        allocate_chores(household.id)
+        flash('Chores have been allocated successfully!', 'success')
+        return jsonify({'success': True})
+    except Exception as e:
+        flash('Something went wrong allocating chores.', 'danger')
+        return jsonify({'success': False, 'error': str(e)})
 
 
 @bp.route('/create-household', methods=['GET', 'POST'])

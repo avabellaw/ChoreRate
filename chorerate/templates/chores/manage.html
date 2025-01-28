@@ -10,6 +10,8 @@
     <div id="page-header">
         <h1>Manage chores</h1>
     </div>
+
+    <button id="run-chore-allocation" class="btn">Run chore allocation</button>
     
     <div id="add-chore">
         <h2>Add chore:</h2>
@@ -79,4 +81,5 @@
 
 {% block scripts %}
     <script src="{{ url_for('static', filename='js/add-chore.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/run-chore-allocation.js') }}"></script>
 {% endblock %}
