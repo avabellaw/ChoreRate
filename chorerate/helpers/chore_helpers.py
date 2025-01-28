@@ -1,6 +1,7 @@
 
 from chorerate.models.chore import Chore
 from chorerate.models.chore_rating import ChoreRating
+from chorerate.models.allocated_chore import AllocatedChore
 from chorerate import db
 
 
@@ -8,7 +9,7 @@ def get_unrated_chores_from_db(household_member):
     '''Get unrated chores for the given household member'''
     household_member_id = household_member.id
     current_household_id = household_member.household_id
-    
+
     # Subquery to find all chore IDs that the current user has rated
     rated_chore_ids_subquery = db.session.query(
         ChoreRating.chore_id).filter_by(
@@ -21,3 +22,13 @@ def get_unrated_chores_from_db(household_member):
     ).all()
 
     return unrated_chores
+
+
+def delete_chore(chore_id):
+    '''Deletes a chore and its associated ratings and allocations'''
+    chore = Chore.query.get(chore_id)
+    chore_ratings = ChoreRating.query.filter_by(chore_id=chore_id).all()
+    chore_allocations = AllocatedChore.query.filter_by(chore_id=chore_id).all()
+
+    db.session.delete(chore, chore_ratings, chore_allocations)
+    db.session.commit()
