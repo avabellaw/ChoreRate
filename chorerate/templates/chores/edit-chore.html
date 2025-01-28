@@ -50,7 +50,10 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn--form">Update chore</button>
+        <div class="dual-form-btn-container">
+            <button type="submit" class="btn btn--form">Update chore</button>
+            <a href="{{ url_for('chore.delete_chore', chore_id=chore.id) }}" id="delete-chore-btn" class="btn btn--form btn--muted">Delete chore</a>
+        </div>
     </form>
 </div>
 

@@ -70,7 +70,7 @@
                 <span>
                     {{ chore.duration_minutes }} minutes
                 </span>
-                <a href="{{ url_for('edit_chore', chore_id=chore.id) }}">Edit</a>
+                <a href="{{ url_for('chore.edit_chore', chore_id=chore.id) }}">Edit</a>
             </li>
             {% endfor %}
         </ul>
