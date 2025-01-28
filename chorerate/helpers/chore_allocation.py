@@ -15,7 +15,8 @@ def get_normalized_ratings(chores, members):
     normalized_ratings = {chore.id: {} for chore in chores}
 
     for member in members:
-        ratings = ChoreRating.query.filter_by(household_member_id=member.id).all()
+        ratings = ChoreRating.query.filter_by(
+            household_member_id=member.id).all()
 
         if not ratings:
             continue
@@ -43,16 +44,21 @@ def get_chore_frequency(chore):
 
 
 def calculate_chore_duration_factors(chores):
-    return {chore.id: chore.duration_minutes / get_chore_frequency(chore) for chore in chores}
+    return {chore.id: chore.duration_minutes / get_chore_frequency(chore)
+            for chore in chores}
 
 
 def get_normalized_ratings_for_member(normalized_ratings, member_id):
-    member_ratings = {chore_id: ratings.get(member_id, None) for chore_id, ratings in normalized_ratings.items()}
+    member_ratings = {chore_id: ratings.get(member_id, None)
+                      for chore_id, ratings in normalized_ratings.items()}
     return member_ratings
 
 
 def allocate_chores(household_id):
-    ''' Calculate the optimal chore allocation for a given household using linear programming '''
+    '''
+        Calculate the optimal chore allocation for a given household
+        using linear programming
+    '''
     members = HouseholdMember.query.filter_by(household_id=household_id).all()
     chores = Chore.query.filter_by(household_id=household_id).all()
 
@@ -69,7 +75,8 @@ def allocate_chores(household_id):
         for member in members:
             rating = normalized_ratings[chore.id][member.id]
             duration_factor = chore_duration_factors[chore.id]
-            user_ratings = get_normalized_ratings_for_member(normalized_ratings, member.id)
+            user_ratings = get_normalized_ratings_for_member(
+                normalized_ratings, member.id)
             if rating == min(user_ratings.values()):  # Least-rated chore
                 c.append(-rating * duration_factor + penalty)
             else:
@@ -89,13 +96,15 @@ def allocate_chores(household_id):
         for i in range(num_chores):
             A_ub[j, i * num_members + j] = chore_duration_factors[chores[i].id]
 
-    b_ub = [sum(chore_duration_factors[chore.id] for chore in chores) / num_members] * num_members
+    b_ub = [sum(chore_duration_factors[chore.id]
+                for chore in chores) / num_members] * num_members
 
     # Define the bounds for each variable (binary 0 or 1)
     bounds = [(0, 1) for _ in range(num_chores * num_members)]
 
     # Solve the linear programming problem
-    res = linprog(c, A_ub=A_ub, b_ub=b_ub, A_eq=A_eq, b_eq=b_eq, bounds=bounds, method='highs')
+    res = linprog(c, A_ub=A_ub, b_ub=b_ub, A_eq=A_eq,
+                  b_eq=b_eq, bounds=bounds, method='highs')
 
     # Extract the results
     assignments = np.reshape(res.x, (num_chores, num_members))
@@ -103,7 +112,8 @@ def allocate_chores(household_id):
     for i, chore in enumerate(chores):
         chore.initialize_last_scheduled()
         for j, member in enumerate(members):
-            if assignments[i, j] > 0.5:  # Binary problem; values close to 1 indicate assignment
+            # Binary problem; close to 1 indicate assignment
+            if assignments[i, j] > 0.5:
                 assignment = AllocatedChore(chore_id=chore.id,
                                             household_member_id=member.id)
                 db.session.add(assignment)

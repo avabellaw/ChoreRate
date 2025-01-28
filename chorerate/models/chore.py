@@ -23,7 +23,10 @@ class Chore(db.Model):
                                  uselist=False)
 
     def num_scheduled_since_allocation(self):
-        '''Returns the number of times the chore has been scheduled since the last chore allocation was run'''
+        '''
+            Returns the number of times the chore has been scheduled since the 
+            last chore allocation was run
+        '''
         if self.last_scheduled is None:
             return 0
 
