@@ -17,7 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 let link = data.registration_link;
                 navigator.clipboard.writeText(link).then(() => {
+                    document.getElementById('registration-link').innerText = link;
                     btnClickMsg(this, event);
+                    document.getElementById('registration-link-container').classList.add('show');   
                 }).catch(err => {
                     console.error('Failed to copy: ', err);
                 });

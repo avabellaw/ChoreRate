@@ -235,6 +235,28 @@ a.small-link {
 
 /* MANAGE */
 
+#registration-link-container {
+    display: none;
+    font-size: 0.8em;
+    overflow: hidden;
+    margin: -5px;
+}
+
+#registration-link-container.show {
+    display: block;
+}
+
+#registration-link-container > label    {
+    font-weight: bold;
+}
+
+#registration-link {
+    display: inline;
+    background-color: #fafafa;
+    padding: 0.4em;
+    border: 1px solid #f0f0f0;
+}
+
 #invite-link{
     display: flex;
     gap: 0.5em;
