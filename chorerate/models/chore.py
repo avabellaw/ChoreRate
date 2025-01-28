@@ -22,6 +22,19 @@ class Chore(db.Model):
                                  backref='chore',
                                  uselist=False)
 
+    def num_scheduled_since_allocation(self):
+        '''Returns the number of times the chore has been scheduled since the last chore allocation was run'''
+        if self.last_scheduled is None:
+            return 0
+
+        match (self.frequency):
+            case FrequencyEnum.DAILY:
+                return (datetime.now().date() - self.last_scheduled).days
+            case FrequencyEnum.WEEKLY:
+                return (datetime.now().date() - self.last_scheduled).days // 7
+            case FrequencyEnum.MONTHLY:
+                return (datetime.now().date() - self.last_scheduled).days // 28
+
     def initialize_last_scheduled(self):
         if self.last_scheduled is None:
             self.set_last_scheduled_today()
