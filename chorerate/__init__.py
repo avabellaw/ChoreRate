@@ -20,7 +20,7 @@ cache = Cache(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'auth.login'
 
 from chorerate.routes import init_app as init_routes # noqa
 init_routes(app)
