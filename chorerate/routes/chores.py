@@ -43,8 +43,10 @@ def rate():
 
         return jsonify({'message': 'success'})
 
+    household_member = household_helper.current_household_member()
+    unrated_chores = chore_helper.get_unrated_chores_from_db(household_member)
+    
     household = household_helper.current_household()
-    unrated_chores = chore_helper.get_unrated_from_db()
 
     # If all chores have been rated, redirect to edit ratings
     # Unless there are no chores in the household.
@@ -72,7 +74,8 @@ def rate():
 @login_required
 def get_unrated():
     '''Get unrated chores for the current user for the rate chores page'''
-    unrated = chore_helper.get_unrated_from_db()
+    household_member = household_helper.current_household_member()
+    unrated = chore_helper.get_unrated_chores_from_db(household_member)
     return jsonify([{'id': chore.id,
                      'name': chore.name,
                      'frequency': chore.frequency.value,
