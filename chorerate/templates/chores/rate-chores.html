@@ -13,7 +13,7 @@
 {% if not has_chores %}
     <div class="text-center">
         <p>No chores to rate.</p>
-        <a href="{{ url_for('manage') }}"><small>Add chores in Manage Chores first.</small></a>
+        <a href="{{ url_for('chore.manage') }}"><small>Add chores in Manage Chores first.</small></a>
     </div>
 {% else %}
     <div id="rate-chores-container" class="hidden">

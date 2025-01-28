@@ -28,11 +28,11 @@
                                 <div class="dropdown-content-container">
                                     <div class="dropdown-content">
                                         <a class="nav-link" href="{{ url_for('chore.manage') }}">Manage chores</a>
-                                        <a class="nav-link" href="{{ url_for('manage_household_members') }}">Members</a>
+                                        <a class="nav-link" href="{{ url_for('household.manage_members') }}">Members</a>
                                     </div>
                                 </div>
                             </div>
-                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                            <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
                         </div>
                         {% endif %}
                     </div>

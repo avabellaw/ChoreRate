@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, \
     redirect, url_for, flash, jsonify
 from flask_login import login_required
 from datetime import datetime
-from chorerate import db, app
+from chorerate import db
 
 # Models
 from chorerate.models.chore import Chore

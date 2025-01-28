@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, \
     url_for, flash, jsonify, Blueprint
 from flask_login import login_required, current_user
-from chorerate import app, db
+from chorerate import db
 
 # Models
 from chorerate.models.household import Household
@@ -54,9 +54,9 @@ def create_household():
     return render_template('household/create-household.html')
 
 
-@app.route('/add-household-members', methods=['GET', 'POST'])
+@bp.route('/add-household-members', methods=['GET', 'POST'])
 @login_required
-def manage_household_members():
+def manage_members():
     '''View for the add household members page'''
     household = db.session.query(Household)\
         .join(HouseholdMember)\
@@ -71,11 +71,11 @@ def manage_household_members():
             if user == current_user:
                 flash("You cannot add yourself to your own household.",
                       'danger')
-                return redirect(url_for('manage_household_members'))
+                return redirect(url_for('household.manage_members'))
             if user in household.members:
                 flash(f"User '{username}' is already a member "
                       + "of household '{household.name}'.", 'danger')
-                return redirect(url_for('manage_household_members'))
+                return redirect(url_for('household.manage_members'))
 
             household_member = HouseholdMember(household_id=household.id,
                                                user_id=user.id)
@@ -93,7 +93,7 @@ def manage_household_members():
                            members=members)
 
 
-@app.route('/get-registration-link', methods=['POST'])
+@bp.route('/get-registration-link', methods=['POST'])
 @login_required
 def get_registration_link():
     '''Create a registration link for the household'''

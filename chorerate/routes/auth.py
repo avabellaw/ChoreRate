@@ -3,7 +3,7 @@ from flask import render_template, request, redirect, \
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from chorerate import app, db
+from chorerate import db
 
 # Models
 from chorerate.models.user import User
@@ -56,7 +56,7 @@ def register():
     return render_template('auth/register.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@bp.route('/login', methods=['GET', 'POST'])
 def login():
     '''Login route, redirect to homepage'''
     if request.method == 'POST':
@@ -74,14 +74,14 @@ def login():
         else:
             flash('User does not exist.', 'danger')
 
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     return render_template('auth/login.html')
 
 
-@app.route('/logout')
+@bp.route('/logout')
 @login_required
 def logout():
     '''Logout route, redirects to login'''
     flash("You have been logged out", 'info')
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('auth.login'))
