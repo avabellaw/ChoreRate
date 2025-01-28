@@ -45,7 +45,7 @@ def rate():
 
     household_member = household_helper.current_household_member()
     unrated_chores = chore_helper.get_unrated_chores_from_db(household_member)
-    
+
     household = household_helper.current_household()
 
     # If all chores have been rated, redirect to edit ratings
@@ -70,7 +70,7 @@ def rate():
     return render_template('chores/rate-chores.html', has_chores=has_chores)
 
 
-@app.route('/rate/get-unrated')
+@bp.route('/rate/get-unrated')
 @login_required
 def get_unrated():
     '''Get unrated chores for the current user for the rate chores page'''
@@ -83,7 +83,7 @@ def get_unrated():
                     for chore in unrated])
 
 
-@app.route('/manage', methods=['GET', 'POST'])
+@bp.route('/manage', methods=['GET', 'POST'])
 @login_required
 def manage():
     '''Add chores and view all chores to edit'''
@@ -103,7 +103,7 @@ def manage():
         db.session.commit()
         flash(f"Chore #{new_chore.id} - '{name.lower()}' \
             added successfully!", 'success')
-        return redirect(url_for('manage'))
+        return redirect(url_for('chore.manage'))
     household_id = household_helper.current_household().id
     chores = Chore.query.filter_by(household_id=household_id).all()
     member_id = household_helper.current_household_member().id
@@ -114,7 +114,7 @@ def manage():
                            allocations=allocations)
 
 
-@app.route('/manage/edit-chore/<int:chore_id>', methods=['GET', 'POST'])
+@bp.route('/manage/edit-chore/<int:chore_id>', methods=['GET', 'POST'])
 @login_required
 def edit_chore(chore_id):
     if request.method == 'POST':
@@ -143,10 +143,31 @@ def edit_chore(chore_id):
         db.session.commit()
         flash(f"Chore #{chore_id} - '{chore.name.lower()}' \
             updated successfully!", 'success')
-        return redirect(url_for('manage'))
+        return redirect(url_for('chore.manage'))
 
     chore = Chore.query.get(chore_id)
     members = household_helper.current_household().members
     return render_template('chores/edit-chore.html',
                            chore=chore,
                            members=members)
+
+
+@bp.route('/manage/delete-chore/<int:chore_id>', methods=['GET', 'POST'])
+@login_required
+def delete_chore(chore_id):
+    chore = Chore.query.get(chore_id)
+
+    users_household = household_helper.current_household()
+
+    if chore.household_id != users_household.id:
+        flash("You do not have permission to delete this chore.", 'danger')
+        return redirect(url_for('home.homepage'))
+
+    if request.method == 'POST':
+        db.session.delete(chore)
+        db.session.commit()
+        flash(f"Chore #{chore_id} - '{chore.name.lower()}' \
+            deleted successfully!", 'success')
+        return redirect(url_for('chore.manage'))
+
+    return render_template('chores/delete-chore.html', chore=chore)
