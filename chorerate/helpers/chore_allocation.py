@@ -114,9 +114,22 @@ def allocate_chores(household_id):
         for j, member in enumerate(members):
             # Binary problem; close to 1 indicate assignment
             if assignments[i, j] > 0.5:
+                existing_assignment = AllocatedChore.query.filter_by(
+                    chore_id=chore.id).first()
+                # If assignment for chore already exists
+                if existing_assignment:
+                    # Update assignment if different member
+                    if existing_assignment.household_member_id != member.id:
+                        existing_assignment.household_member_id = member.id
+                        db.session.commit()
+
+                    # Continue whether assignment is updated or not
+                    continue
+
                 assignment = AllocatedChore(chore_id=chore.id,
                                             household_member_id=member.id)
                 db.session.add(assignment)
-                db.session.commit()
 
+    # Commit the changes to the database
+    db.session.commit()
     Household.query.get(household_id).chore_allocation_complete()
