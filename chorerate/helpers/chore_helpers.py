@@ -2,10 +2,11 @@
 from chorerate.models.chore import Chore
 from chorerate.models.chore_rating import ChoreRating
 from chorerate.models.allocated_chore import AllocatedChore
+from chorerate.models.household_member import HouseholdMember
 from chorerate import db
 
 
-def get_unrated_chores_from_db(household_member):
+def get_unrated_chores_for_member(household_member):
     '''Get unrated chores for the given household member'''
     household_member_id = household_member.id
     current_household_id = household_member.household_id
@@ -27,21 +28,29 @@ def get_unrated_chores_from_db(household_member):
 def get_unrated_chores_for_household(household):
     '''Get unrated chores for the given household'''
     household_id = household.id
+    unrated_chores_by_member = {}
 
     # Subquery to find all rated chores in the household
     rated_chores_subquery = db.session.query(
-        ChoreRating.chore_id
-    ).join(Chore).filter(
-        Chore.household_id == household_id
+        ChoreRating.chore_id,
+        ChoreRating.household_member_id
+    ).join(HouseholdMember).filter(
+        HouseholdMember.household_id == household_id
     ).subquery()
 
-    # Find all unrated chores for the household
-    unrated_chores = db.session.query(Chore).filter(
-        Chore.household_id == household_id,
-        ~Chore.id.in_(rated_chores_subquery.select())
-    ).all()
+    # Find all unrated chores for each member
+    for member in household.members:
+        unrated_chores = db.session.query(Chore).filter(
+            Chore.household_id == household_id,
+            ~Chore.id.in_(
+                db.session.query(rated_chores_subquery.c.chore_id).filter(
+                    rated_chores_subquery.c.household_member_id == member.id
+                )
+            )
+        ).all()
+        unrated_chores_by_member[member.id] = unrated_chores
 
-    return unrated_chores
+    return unrated_chores_by_member
 
 
 def delete_chore(chore_id):

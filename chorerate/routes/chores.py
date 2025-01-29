@@ -44,7 +44,8 @@ def rate():
         return jsonify({'message': 'success'})
 
     household_member = household_helper.current_household_member()
-    unrated_chores = chore_helper.get_unrated_chores_from_db(household_member)
+    unrated_chores = chore_helper\
+        .get_unrated_chores_for_member(household_member)
 
     household = household_helper.current_household()
 
@@ -75,7 +76,7 @@ def rate():
 def get_unrated():
     '''Get unrated chores for the current user for the rate chores page'''
     household_member = household_helper.current_household_member()
-    unrated = chore_helper.get_unrated_chores_from_db(household_member)
+    unrated = chore_helper.get_unrated_chores_for_member(household_member)
     return jsonify([{'id': chore.id,
                      'name': chore.name,
                      'frequency': chore.frequency.value,

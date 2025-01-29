@@ -14,6 +14,8 @@ from chorerate.helpers.chore_allocation import allocate_chores
 
 from chorerate.exceptions import ChoreAllocationException
 
+import traceback
+
 import secrets
 
 bp = Blueprint('household', __name__)
@@ -33,6 +35,7 @@ def run_chore_allocation():
         return jsonify({'success': False, 'error': str(e)})
     except Exception as e:
         flash('Something went wrong allocating chores.', 'danger')
+        print(traceback.format_exc())
         return jsonify({'success': False, 'error': str(e)})
 
 
