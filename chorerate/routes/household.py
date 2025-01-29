@@ -34,7 +34,7 @@ def run_chore_allocation():
         flash(str(e), 'error')
         return jsonify({'success': False, 'error': str(e)})
     except Exception as e:
-        flash('Something went wrong allocating chores.', 'danger')
+        flash('Something went wrong allocating chores.', 'error')
         print(traceback.format_exc())
         return jsonify({'success': False, 'error': str(e)})
 
