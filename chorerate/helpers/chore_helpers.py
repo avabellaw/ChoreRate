@@ -24,6 +24,26 @@ def get_unrated_chores_from_db(household_member):
     return unrated_chores
 
 
+def get_unrated_chores_for_household(household):
+    '''Get unrated chores for the given household'''
+    household_id = household.id
+
+    # Subquery to find all rated chores in the household
+    rated_chores_subquery = db.session.query(
+        ChoreRating.chore_id
+    ).join(Chore).filter(
+        Chore.household_id == household_id
+    ).subquery()
+
+    # Find all unrated chores for the household
+    unrated_chores = db.session.query(Chore).filter(
+        Chore.household_id == household_id,
+        ~Chore.id.in_(rated_chores_subquery.select())
+    ).all()
+
+    return unrated_chores
+
+
 def delete_chore(chore_id):
     '''Deletes a chore and its associated ratings and allocations'''
     chore = Chore.query.get(chore_id)
