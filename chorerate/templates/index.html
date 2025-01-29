@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-
     <section>
         <h2>Today's Chores</h2>
         {% if not todays_chores %}
@@ -71,5 +69,4 @@
             <p>Chore due: {{ allocation.due_date }}</p>
         {% endfor %}
     </section>
-</div>    
 {% endblock %}

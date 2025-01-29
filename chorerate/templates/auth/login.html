@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
     <div id="page-header">
         <h1>Login</h1>
     </div>
@@ -20,7 +19,5 @@
         <button class="btn form--btn" type="submit">Login</button>
 
         <a href="{{ url_for('auth.register') }}" class="small-link">Click here to register</a>
-    </form>
-</div>
-    
+    </form>    
 {% endblock %}
