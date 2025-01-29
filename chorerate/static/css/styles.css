@@ -154,13 +154,22 @@ button.dropdown-btn:hover {
     font-size: 0.75em;
     list-style-type: none;
     background-color: #b7f1ff2b;
-
-    transform: translateY(-100%);
+    transform: translateY(-100%);   
     animation: slideInSlideOut 5s linear;
+    /* Height same size as container */
+    height: inherit;
+    /* Factor border and padding into height */
+    box-sizing: border-box;
+    align-items: center;
+}
+
+#flashes:has(li.error) {
+    border-color: #ff5858;
+    background-color: #ffe1e12b;
 }
 
 #flashes-container {
-    height: calc(.70em + .75em);
+    height: calc(1em + .35em + .30em);
     overflow: hidden;
 }
 
