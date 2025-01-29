@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    {{ super() }} - Manage
+{{ super() }} - Manage
 {% endblock %}
 
 {% block content %}
@@ -10,7 +10,7 @@
     </div>
 
     <button id="run-chore-allocation" class="btn">Run chore allocation</button>
-    
+
     <div id="add-chore">
         <h2>Add chore:</h2>
         <form class="form" id="add-chore-form" method="POST">
@@ -18,7 +18,7 @@
                 <label for="chore-name">Name:</label>
                 <input type="text" id="chore-name" name="chore-name" required>
             </div>
-    
+
             <div class="form-group">
                 <label for="chore-frequency">Frequency:</label>
                 <select id="chore-frequency" name="chore-frequency" required>
@@ -27,7 +27,7 @@
                     <option value="daily" selected>Daily</option>
                 </select>
             </div>
-    
+
             <div class="form-group form-group--inline">
                 <input type="number" min="1" max="28" name="chore-times" id="chore-times" value="1">
                 <label for="chore-times"> per <span id="frequency">day</span></label>
@@ -37,45 +37,52 @@
                 <label for="chore-duration">Duration (minutes):</label>
                 <input type="number" id="chore-duration" name="chore-duration" value="15" required>
             </div>
-    
+
             <button type="submit" class="btn btn--form">Create chore</button>
         </form>
     </div>
-    
-    <div id="chores">
-        <h2>Chores:</h2>
-        <ul class="chore-list">
-            {% for chore in chores %}
-            <li>
-                <span>
-                    {{ chore.name }}
-                    {% if chore.allocation %}
-                        {{ chore.allocation.household_member.username }}
-                    {% else %}
-                        <i>Unallocated</i>
-                    {% endif %}
-                </span>
-                <span>
-                    {{ chore.times_per_frequency }}x
-                    {% if chore.frequency.value == 'daily' %}
-                        per day
-                    {% elif chore.frequency.value == 'weekly' %}
-                        per week
-                    {% elif chore.frequency.value == 'monthly' %}
-                        per month
-                    {% endif %}
-                </span>
-                <span>
-                    {{ chore.duration_minutes }} minutes
-                </span>
+
+    <h2>Chores:</h2>
+    <table class="chore-table">
+        <tr>
+            <th>Name</th>
+            <th>Allocation</th>
+            <th>Frequency</th>
+            <th>Actions</th>
+        </tr>
+        {% for chore in chores %}
+        <tr>
+            <td>
+                {{ chore.name }}
+            </td>
+            <td>
+                {% if chore.allocation %}
+                {{ chore.allocation.household_member.user.username }}
+                {% else %}
+                <i>Unallocated</i>
+                {% endif %}
+            </td>
+            <td>
+                {{ chore.times_per_frequency }}x
+                {% if chore.frequency.value == 'daily' %}
+                per day
+                {% elif chore.frequency.value == 'weekly' %}
+                per week
+                {% elif chore.frequency.value == 'monthly' %}
+                per month
+                {% endif %}
+
+                {{ chore.duration_minutes }} minutes
+            </td>
+            <td>
                 <a href="{{ url_for('chore.edit_chore', chore_id=chore.id) }}">Edit</a>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>    
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ url_for('static', filename='js/add-chore.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/run-chore-allocation.js') }}"></script>
+<script src="{{ url_for('static', filename='js/add-chore.js') }}"></script>
+<script src="{{ url_for('static', filename='js/run-chore-allocation.js') }}"></script>
 {% endblock %}
