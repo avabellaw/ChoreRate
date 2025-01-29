@@ -7,6 +7,10 @@ from chorerate.models.allocated_chore import AllocatedChore
 from chorerate.models.household import Household
 from chorerate.models import FrequencyEnum
 
+from . import chore_helpers as chore_helper
+
+from chorerate.exceptions import ChoreAllocationException
+
 import numpy as np
 from scipy.optimize import linprog
 
@@ -59,6 +63,11 @@ def allocate_chores(household_id):
         Calculate the optimal chore allocation for a given household
         using linear programming
     '''
+
+    household = Household.query.get(household_id)
+    if chore_helper.get_unrated_chores_for_household(household):
+        raise ChoreAllocationException('Some chores have not been rated yet.')
+
     members = HouseholdMember.query.filter_by(household_id=household_id).all()
     chores = Chore.query.filter_by(household_id=household_id).all()
 

@@ -12,6 +12,8 @@ from chorerate.models.user import User
 from chorerate.helpers.household_helpers import current_household
 from chorerate.helpers.chore_allocation import allocate_chores
 
+from chorerate.exceptions import ChoreAllocationException
+
 import secrets
 
 bp = Blueprint('household', __name__)
@@ -26,6 +28,9 @@ def run_chore_allocation():
         allocate_chores(household.id)
         flash('Chores have been allocated successfully!', 'success')
         return jsonify({'success': True})
+    except ChoreAllocationException as e:
+        flash(str(e), 'danger')
+        return jsonify({'success': False, 'error': str(e)})
     except Exception as e:
         flash('Something went wrong allocating chores.', 'danger')
         return jsonify({'success': False, 'error': str(e)})
