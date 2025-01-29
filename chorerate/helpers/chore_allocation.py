@@ -65,8 +65,19 @@ def allocate_chores(household_id):
     '''
 
     household = Household.query.get(household_id)
-    if chore_helper.get_unrated_chores_for_household(household):
-        raise ChoreAllocationException('Some chores have not been rated yet.')
+    unrated_chores = chore_helper.get_unrated_chores_for_household(household)
+
+    if unrated_chores:
+        users_with_unrated = len(unrated_chores)
+        if users_with_unrated == 1:
+            # Use iterator and next() to get the first key in the dictionary
+            member_id = next(iter(unrated_chores))
+            member = HouseholdMember.query.get(member_id)
+            message = f'{member.user.username} has unrated chores'
+        else:
+            message = f'{users_with_unrated} members have unrated chores'
+
+        raise ChoreAllocationException(message)
 
     members = HouseholdMember.query.filter_by(household_id=household_id).all()
     chores = Chore.query.filter_by(household_id=household_id).all()
