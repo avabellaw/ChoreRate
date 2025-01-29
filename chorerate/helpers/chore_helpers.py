@@ -26,7 +26,11 @@ def get_unrated_chores_for_member(household_member):
 
 
 def get_unrated_chores_for_household(household):
-    '''Get unrated chores for the given household'''
+    '''
+        Get unrated chores for the given household
+
+        Returns: A dictionary of unrated chores by member ID key
+    '''
     household_id = household.id
     unrated_chores_by_member = {}
 
@@ -48,7 +52,8 @@ def get_unrated_chores_for_household(household):
                 )
             )
         ).all()
-        unrated_chores_by_member[member.id] = unrated_chores
+        if unrated_chores:
+            unrated_chores_by_member[member.id] = unrated_chores
 
     return unrated_chores_by_member
 
