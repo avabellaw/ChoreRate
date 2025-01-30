@@ -21,22 +21,25 @@ import secrets
 bp = Blueprint('household', __name__)
 
 
-@bp.route('/run-chore-allocation', methods=['POST'])
+@bp.route('/confirm-chore-allocation', methods=['GET', 'POST'])
 @login_required
 def run_chore_allocation():
     '''View to the run chore allocation'''
+
+    if request.method == 'POST':
+        try:
+            allocate_chores(current_household().id)
+            flash('Chores allocated successfully!', 'success')
+            return redirect(url_for('chore.manage'))
+        except ChoreAllocationException as e:
+            flash(str(e), 'danger')
+        except Exception:
+            flash('Something went wrong allocating chores.', 'error')
+            print(traceback.format_exc())
+
     household = current_household()
-    try:
-        allocate_chores(household.id)
-        flash('Chores have been allocated successfully!', 'success')
-        return jsonify({'success': True})
-    except ChoreAllocationException as e:
-        flash(str(e), 'error')
-        return jsonify({'success': False, 'error': str(e)})
-    except Exception as e:
-        flash('Something went wrong allocating chores.', 'error')
-        print(traceback.format_exc())
-        return jsonify({'success': False, 'error': str(e)})
+    return render_template('household/confirm-chore-allocation.html',
+                           household=household)
 
 
 @bp.route('/create-household', methods=['GET', 'POST'])

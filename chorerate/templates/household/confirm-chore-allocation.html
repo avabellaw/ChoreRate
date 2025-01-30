@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ super() }} - Delete chore
+{% endblock %}
+
+{% block content %}
+
+<div id="page-header">
+    <h1>Run chore allocation</h1>
+</div>
+
+<form class="form form--sm" method="POST">
+    <p class="text-center">Are you sure you want to run chore allocation for household '{{ household.name }}'?</p>
+    <br>
+
+    <div class="dual-form-btn-container">
+        <a href="{{ url_for('chore.manage') }}" class="btn btn--form btn--muted">Cancel</a>
+        <button type="submit" class="btn btn--form">Allocate Chores</button>
+    </div>
+</form>
+
+{% endblock %}

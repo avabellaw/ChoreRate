@@ -304,7 +304,7 @@ a.small-link {
     display: flex;
 }
 
-#delete-chore-btn {
+.dual-form-btn-container > button:last-child {
     margin-left: auto;
 }
 
