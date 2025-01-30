@@ -51,12 +51,12 @@ def add_user_to_household_by_token(user, token):
         if HouseholdMember.query.filter_by(
                 user_id=user.id).first():
             flash('You are already a member of a household.', 'danger')
-            return redirect(url_for('homepage'))
+            return redirect(url_for('home.homepage'))
 
         # If token has expired, redirect to homepage
         if registration_link.expires_at < datetime.now():
             flash('Registration link has expired.', 'danger')
-            return redirect(url_for('homepage'))
+            return redirect(url_for('home.homepage'))
 
         new_household_member = HouseholdMember(
             household_id=registration_link.household_id,
@@ -71,4 +71,4 @@ def add_user_to_household_by_token(user, token):
         db.session.commit()
         flash(f"Welcome {user.username}, you've been added to"
               + f" household '{household_name}'!", 'success')
-        return redirect(url_for('homepage'))
+        return redirect(url_for('home.homepage'))
