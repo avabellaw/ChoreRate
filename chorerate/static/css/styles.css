@@ -225,6 +225,10 @@ button.dropdown-btn:hover {
     display: none !important;
 }
 
+a.btn {
+    display: block;
+}
+
 .btn {
     width: fit-content;
     padding: 0.6em 1.75em;
