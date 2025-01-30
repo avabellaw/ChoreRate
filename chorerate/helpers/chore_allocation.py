@@ -7,8 +7,6 @@ from chorerate.models.allocated_chore import AllocatedChore
 from chorerate.models.household import Household
 from chorerate.models import FrequencyEnum
 
-from collections import defaultdict
-
 from . import chore_helpers as chore_helper
 
 from chorerate.exceptions import ChoreAllocationException
@@ -60,39 +58,6 @@ def get_normalized_ratings_for_member(normalized_ratings, member_id):
     return member_ratings
 
 
-def calculate_delta_duration(last_ran_chore_allocation):
-    '''
-        Calculate the delta duration for each member
-
-        Args:
-            last_ran_chore_allocation: Date the last chore allocation was run
-                                    (not the date the chore was last allocated)
-
-        Returns:
-            A dictionary containing the delta duration for each member
-    '''
-    member_mins_since_allocation = defaultdict(float)
-
-    for chore_allocation in AllocatedChore.query.all():
-        chore = chore_allocation.chore
-        member_id = chore_allocation.household_member_id
-
-        num_scheduled = chore.num_scheduled_since_allocation(
-            last_ran_chore_allocation)
-        minutes_since_allocation = chore.duration_minutes * num_scheduled
-        member_mins_since_allocation[member_id] += minutes_since_allocation
-
-    member_count = len(member_mins_since_allocation.keys())
-
-    equal_duration = sum(member_mins_since_allocation.values()) / member_count
-
-    delta_duration = {member_id: equal_duration - duration
-                      for member_id, duration
-                      in member_mins_since_allocation.items()}
-
-    return delta_duration
-
-
 def allocate_chores(household_id):
     '''
         Calculate the optimal chore allocation for a given household
@@ -133,8 +98,7 @@ def allocate_chores(household_id):
             user_ratings = get_normalized_ratings_for_member(
                 normalized_ratings, member.id)
 
-            coefficient = -rating * duration_factor + \
-                member.delta_duration
+            coefficient = -rating * duration_factor
             if rating == min(user_ratings.values()):  # Least-rated chore
                 coefficient += penalty
 
@@ -188,12 +152,6 @@ def allocate_chores(household_id):
                                             household_member_id=member.id)
                 db.session.add(assignment)
     household = Household.query.get(household_id)
-    member_delta_durations = calculate_delta_duration(
-        household.last_run_chore_allocation)
-
-    for member_id, delta_duration in member_delta_durations.items():
-        member = HouseholdMember.query.get(member_id)
-        member.delta_duration += delta_duration
 
     # Commit the changes to the database
     db.session.commit()

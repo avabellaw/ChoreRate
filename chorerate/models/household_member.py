@@ -12,7 +12,6 @@ class HouseholdMember(db.Model):
                         db.ForeignKey('users.id'),
                         nullable=False,
                         unique=True)
-    delta_duration = db.Column(db.Float, nullable=False, default=0.0)
 
     user = db.relationship('User', backref='household_member')
 
