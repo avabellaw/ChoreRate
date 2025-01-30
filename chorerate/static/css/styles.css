@@ -343,6 +343,45 @@ a.small-link {
     text-decoration: underline;
 }
 
+.chore-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: center;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.chore-list > li {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.8em;
+    justify-content: space-between;
+    width: 100%;
+    background-color: aliceblue;
+    margin: 0 0.5em;
+    padding: 1em;
+    border: 1px solid #0000003b;
+    border-left: none;
+    border-right: none;
+    align-items: center;
+}
+
+.chore-list > li:hover {
+    border-color: #00000070;
+    cursor: pointer;
+}
+
+.chore-list > li > a {
+    color: rgb(88, 0, 0);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.chore-list > li:hover > a {
+    text-decoration: underline;
+}
+
 /* RATE */
 
 #rate-chores-container {
