@@ -25,8 +25,10 @@ def get_normalized_ratings(chores, members):
         if not ratings:
             continue
 
-        mean_rating = np.mean([rating.rating for rating in ratings])
-        std_rating = np.std([rating.rating for rating in ratings])
+        ratings_list = [rating.rating for rating in ratings]
+
+        mean_rating = np.mean(ratings_list)
+        std_rating = np.std(ratings_list)
 
         for rating in ratings:
             if std_rating == 0:
@@ -100,7 +102,7 @@ def allocate_chores(household_id):
 
             coefficient = -rating * duration_factor
             if rating == min(user_ratings.values()):  # Least-rated chore
-                coefficient += penalty
+                coefficient += penalty * abs(rating)
 
             c.append(coefficient)
 
