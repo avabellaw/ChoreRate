@@ -53,7 +53,7 @@ class Chore(db.Model):
             case FrequencyEnum.WEEKLY:
                 return self.last_scheduled + timedelta(weeks=1)
             case FrequencyEnum.MONTHLY:
-                return self.last_scheduled + timedelta(months=1)
+                return self.last_scheduled + timedelta(weeks=4)
 
     def set_last_scheduled_today(self):
         self.last_scheduled = datetime.now().date()
