@@ -40,15 +40,15 @@ def get_normalized_ratings(chores, members):
 
 def get_chore_frequency(chore):
     if chore.frequency == FrequencyEnum.DAILY:
-        return 1
+        return chore.times_per_frequency * 28
     elif chore.frequency == FrequencyEnum.WEEKLY:
-        return 7
+        return chore.times_per_frequency * 4
     elif chore.frequency == FrequencyEnum.MONTHLY:
-        return 28
+        return chore.times_per_frequency
 
 
 def calculate_chore_duration_factors(chores):
-    return {chore.id: chore.duration_minutes / get_chore_frequency(chore)
+    return {chore.id: chore.duration_minutes * get_chore_frequency(chore)
             for chore in chores}
 
 
