@@ -7,7 +7,7 @@
             <p>No chores today!</p>
         {% else %}
             <ul class="chore-list" id="todays-chores">
-                {% for chore, allocation in todays_chores %}
+                {% for chore in todays_chores %}
                 <li class="{% if chore.is_overdue and not chore.is_completed %}overdue{% endif %}
                            {% if chore.is_completed() %}completed{% endif %}"
                     data-chore-id="{{ chore.id }}"
@@ -31,37 +31,36 @@
         {% if not chores %}
             <p>Pending chore allocation...</p>
         {% else %}
-            <ul class="chore-list">
-                {% for chore in unique_chores %}
-                <li>
-                    <h3>
-                        {{ chore.name }}
-                    </h3>
-                    <span>
-                        Frequency: {{ chore.times_per_frequency }} per
-                        {% if chore.frequency == 'daily' %}
-                            day
-                        {% elif chore.frequency == 'weekly' %}
-                            week
-                        {% elif chore.frequency == 'monthly' %}
-                            month
-                        {% endif %}
-                    </span>
-                    <span>
-                        Duration: {{ chore.duration_minutes }} minutes
-                    </span>
-                </li>
-                {% endfor %}
-            </ul>
+        <table class="chore-table">
+            <tr>
+                <th>Chore</th>
+                <th>Frequency</th>
+                <th>Next due</th>
+            </tr>
+            {% for chore in chores %}
+            <tr>
+                <td>
+                    {{ chore.name }}
+                </td>
+                <td>
+                    {{ chore.times_per_frequency }}x
+                    {% if chore.frequency.value == 'daily' %}
+                    per day
+                    {% elif chore.frequency.value == 'weekly' %}
+                    per week
+                    {% elif chore.frequency.value == 'monthly' %}
+                    per month
+                    {% endif %}
+    
+                    {{ chore.duration_minutes }} minutes
+                </td>
+                <td>
+                    {{ chore.get_next_due().strftime('%d %B %Y') }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
         {% endif %}
-    </section>
-
-    <section>
-        <h2>Chore schedule</h2>
-        {% for chore, allocation in chores %}
-            <h3>{{ chore.name }}</h3>
-            <p>Chore due: {{ allocation.due_date }}</p>
-        {% endfor %}
     </section>
 {% endblock %}
 
