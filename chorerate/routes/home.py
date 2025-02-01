@@ -22,18 +22,12 @@ def homepage():
         return redirect(url_for('household.create_household'))
 
     member_id = household_member.id
-    chores = db.session.query(Chore, AllocatedChore)\
+    chores = Chore.query\
         .join(AllocatedChore)\
         .filter(AllocatedChore.household_member_id == member_id).all()
 
-    unique_chores = []
-    for chore, _ in chores:
-        if chore not in unique_chores:
-            unique_chores.append(chore)
-
-    todays_chores = [(chore, allocation) for chore, allocation in chores
-                     if allocation.chore.get_next_due() == date.today()]
+    todays_chores = [chore for chore in chores if chore.get_next_due() == date.today()]
     return render_template('index.html',
                            chores=chores,
-                           unique_chores=unique_chores,
+                           unique_chores=chores,
                            todays_chores=todays_chores)
