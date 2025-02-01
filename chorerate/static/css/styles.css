@@ -351,6 +351,35 @@ a.small-link {
     background-color: #ffe4e4;
 }
 
+.chore-list > li {
+    position: relative;
+}
+
+.chore-list > li.completed {
+    /* opacity: 0.2; */
+}
+
+.chore-list > li.completed::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff95;
+    z-index: 1;
+}
+
+.chore-list >li.completed::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    z-index: 222;
+    border: 1px solid rgb(44, 44, 44);
+}
+
 .chore-list {
     display: flex;
     flex-wrap: wrap;

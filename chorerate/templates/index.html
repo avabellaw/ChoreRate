@@ -6,9 +6,12 @@
         {% if not todays_chores %}
             <p>No chores today!</p>
         {% else %}
-            <ul class="chore-list">
+            <ul class="chore-list" id="todays-chores">
                 {% for chore, allocation in todays_chores %}
-                <li class="{% if chore.is_overdue %}overdue{% endif %}">
+                <li class="{% if chore.is_overdue and not chore.is_completed %}overdue{% endif %}
+                           {% if chore.is_completed() %}completed{% endif %}"
+                    data-chore-id="{{ chore.id }}"
+                >
                     <h3>
                         {{ chore.name }}
                     </h3>
@@ -69,4 +72,8 @@
             <p>Chore due: {{ allocation.due_date }}</p>
         {% endfor %}
     </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/toggle-chore-completed.js') }}"></script>
 {% endblock %}

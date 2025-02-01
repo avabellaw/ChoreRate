@@ -17,6 +17,7 @@ class Chore(db.Model):
     times_per_frequency = db.Column(db.SmallInteger, nullable=False)
     duration_minutes = db.Column(db.SmallInteger, nullable=False)
     last_scheduled = db.Column(db.Date, nullable=True)
+    date_completed = db.Column(db.Date, nullable=True)
 
     allocation = db.relationship('AllocatedChore',
                                  backref='chore',
@@ -47,14 +48,20 @@ class Chore(db.Model):
             self.last_scheduled = self.get_next_due()
 
     def get_next_due(self):
+        today = datetime.now().date()
         match (self.frequency):
             case FrequencyEnum.DAILY:
-                return self.last_scheduled + timedelta(days=1)
+                return max(self.last_scheduled + timedelta(days=1), today)
             case FrequencyEnum.WEEKLY:
-                return self.last_scheduled + timedelta(weeks=1)
+                return max(self.last_scheduled + timedelta(weeks=1), today)
             case FrequencyEnum.MONTHLY:
-                return self.last_scheduled + timedelta(weeks=4)
- 
+                return max(self.last_scheduled + timedelta(weeks=4), today)
+
+    def is_completed(self):
+        if self.date_completed is None:
+            return False
+        return self.date_completed == datetime.now().date()
+
     def is_overdue(self):
         return self.get_next_due() < datetime.now().date()
 

@@ -84,6 +84,31 @@ def get_unrated():
                     for chore in unrated])
 
 
+@bp.route('/toggle-chore-completed', methods=['POST'])
+@login_required
+def toggle_completed():
+    '''Toggle the completion status of a chore'''
+    data = request.get_json()
+    chore_id = data['chore_id']
+
+    member = household_helper.current_household_member()
+
+    chore = Chore.query.get(chore_id)
+    allocation = AllocatedChore.query.filter_by(chore_id=chore_id,
+                                                household_member_id=member.id).first()
+    if not allocation:
+        flash(f"{chore.name} is not your chore.", 'error')
+        return redirect(url_for('home.homepage'))
+    else:
+        if chore.date_completed and chore.date_completed == datetime.now().date():
+            chore.date_completed = None
+        else:
+            chore.date_completed = datetime.now().date()
+        db.session.commit()
+        return jsonify({'message': 'success',
+                        'completed': chore.date_completed == datetime.now().date()})
+
+
 @bp.route('/manage', methods=['GET', 'POST'])
 @login_required
 def manage():
