@@ -8,7 +8,7 @@
         {% else %}
             <ul class="chore-list">
                 {% for chore, allocation in todays_chores %}
-                <li>
+                <li class="{% if chore.is_overdue %}overdue{% endif %}">
                     <h3>
                         {{ chore.name }}
                     </h3>

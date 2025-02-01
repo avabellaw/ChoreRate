@@ -347,6 +347,10 @@ a.small-link {
     text-decoration: underline;
 }
 
+.chore-list > li.overdue {
+    background-color: #ffe4e4;
+}
+
 .chore-list {
     display: flex;
     flex-wrap: wrap;

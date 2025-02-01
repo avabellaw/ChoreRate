@@ -54,6 +54,9 @@ class Chore(db.Model):
                 return self.last_scheduled + timedelta(weeks=1)
             case FrequencyEnum.MONTHLY:
                 return self.last_scheduled + timedelta(weeks=4)
+ 
+    def is_overdue(self):
+        return self.get_next_due() < datetime.now().date()
 
     def set_last_scheduled_today(self):
         self.last_scheduled = datetime.now().date()

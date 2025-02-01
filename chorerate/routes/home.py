@@ -32,7 +32,7 @@ def homepage():
             unique_chores.append(chore)
 
     todays_chores = [(chore, allocation) for chore, allocation in chores
-                     if allocation.due_date == date.today()]
+                     if allocation.chore.get_next_due() <= date.today()]
     return render_template('index.html',
                            chores=chores,
                            unique_chores=unique_chores,
