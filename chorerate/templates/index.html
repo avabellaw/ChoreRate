@@ -12,19 +12,10 @@
                            {% if chore.is_completed() %}completed{% endif %}"
                     data-chore-id="{{ chore.id }}"
                 >
-                    <h3>
-                        {{ chore.name }}
-                    </h3>
+                    <span><strong>Chore: </strong>{{ chore.name }}</span>
                     <span>
-                        Duration: {{ chore.duration_minutes }} minutes
-                    </span>
-                    <span>
-                        Completed:
-                        {% if chore.completed_date %}
-                            Yes
-                        {% else %}
-                            No
-                        {% endif %}
+                        <strong>Duration: </strong>
+                         {{ chore.duration_minutes }} minutes
                     </span>
                 </li>
                 {% endfor %}
