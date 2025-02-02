@@ -4,6 +4,8 @@ from chorerate import db
 from sqlalchemy import Enum
 from . import FrequencyEnum
 
+import math
+
 
 class Chore(db.Model):
     '''Model for the chore table'''
@@ -53,9 +55,11 @@ class Chore(db.Model):
             case FrequencyEnum.DAILY:
                 return max(self.last_scheduled + timedelta(days=1), today)
             case FrequencyEnum.WEEKLY:
-                return max(self.last_scheduled + timedelta(weeks=1), today)
+                days = math.round(7 / self.times_per_frequency)
+                return max(self.last_scheduled + timedelta(days=days), today)
             case FrequencyEnum.MONTHLY:
-                return max(self.last_scheduled + timedelta(weeks=4), today)
+                days = math.round(28 / self.times_per_frequency)
+                return max(self.last_scheduled + timedelta(days=days), today)
 
     def is_completed(self):
         if self.date_completed is None:
